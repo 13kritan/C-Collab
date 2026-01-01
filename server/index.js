@@ -1,11 +1,11 @@
 const express = require("express")
-const corsOptions  = require("./config/cors")
+const cors  = require("cors")
 const dotenv = require("dotenv")
 
 const connectDB = require("./config/connectDB")
-const cors = require("./config/cors")
+const corsOptions = require("./config/cors")
 
-const authRoutes = require("")
+const authRoutes = require("./routes/auth.routes")
 
 dotenv.config()
 
@@ -33,10 +33,10 @@ const startServer =async() => {
     try {
         await connectDB()
         app.listen(PORT, () => 
-            console.log(`Server Connection Successfull on PORT: ${PORT}`)
+            console.log(`✅ Server Connection Successfull on PORT: ${PORT}`)
         )
     } catch (error) {
-        console.error("Server Connection Failed! ", error.message)
+        console.error("❌ Server Connection Failed! ", error.message)
         process.exit(1)
     }
 }
