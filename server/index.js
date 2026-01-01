@@ -6,6 +6,7 @@ const connectDB = require("./config/connectDB")
 const corsOptions = require("./config/cors")
 
 const authRoutes = require("./routes/auth.routes")
+const documentRoutes = require("./routes/document.routes")
 
 dotenv.config()
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 
 // API ROUTES
 app.use("/api/auth", authRoutes)
+app.use("/api/document", documentRoutes)
 
 
 // SERVER STARTUP
