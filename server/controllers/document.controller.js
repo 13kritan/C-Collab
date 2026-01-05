@@ -8,7 +8,7 @@ module.exports.createDocument = async (req, res) => {
         if (!name)
             return res.status(400).json({ message: "Document name is required" })
 
-        const newDoc = Document.create({
+        const newDoc = await Document.create({
             name,
             content: content || "C Code",
             owner: req.userId
@@ -27,6 +27,7 @@ module.exports.getAllMyDocument = async (req, res) => {
         const docs = await Document.find({
             $or: [{ owner: req.userId }, { collaborators: req.userId }]
         }).sort({ updatedAt: -1 })
+        res.status(201).json({ message: "All Documents fetched", docs: docs })
     } catch (error) {
         console.error("Fetch Documents Error!", error)
         res.status(500).json({ message: "Server Error!" })
@@ -54,7 +55,7 @@ module.exports.getDocumentById = async (req, res) => {
 // UPDATE DOCUMENT
 module.exports.updateDocument = async (req, res) => {
     try {
-        const { content } = req.body
+        const { name, content } = req.body
 
         const doc = await Document.findById(req.params.id)
         if (!doc)
@@ -64,6 +65,7 @@ module.exports.updateDocument = async (req, res) => {
             return res.status(403).json({ message: "Access denied" })
 
         doc.content = content || doc.content
+        doc.name = name || doc.name
 
         await doc.save()
 

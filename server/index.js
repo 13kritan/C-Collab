@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 
 // API ROUTES
 app.use("/api/auth", authRoutes)
-app.use("/api/document", documentRoutes)
+app.use("/api/document", documentRoutes)  
 
 
 // SERVER STARTUP
