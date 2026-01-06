@@ -3,17 +3,25 @@ const Document = require("../models/document.model")
 // CREATE DOCUMENT
 module.exports.createDocument = async (req, res) => {
     try {
-        const { name, content } = req.body
+        const { name, projectId, language } = req.body
 
-        if (!name)
-            return res.status(400).json({ message: "Document name is required" })
+        const project = await Project.findById(projectId)
+        if (!project)
+            return res.status(404).json({ message: "Project not found" })
 
-        const newDoc = await Document.create({
+        const canEdit = project.owner.toString() === req.userId || project.collaborators.includes(req.userId)
+
+        if (!canEdit)
+            return res.status(403).json({ message: "Access denied" })
+
+        const doc = await Document.create({
             name,
-            content: content || "C Code",
-            owner: req.userId
-        })
-        res.status(201).json({ message: "Document created", document: newDoc })
+            language: language || "C",
+            project: projectId,
+            createdBy: req.userId
+        });
+
+        res.status(201).json({ message: "Document Created.", document: doc });
 
     } catch (error) {
         console.error("Document Creation Error!", error)
@@ -22,12 +30,23 @@ module.exports.createDocument = async (req, res) => {
 }
 
 // GET ALL DOCUMENTS
-module.exports.getAllMyDocument = async (req, res) => {
+module.exports.getAllDocuments = async (req, res) => {
     try {
-        const docs = await Document.find({
-            $or: [{ owner: req.userId }, { collaborators: req.userId }]
-        }).sort({ updatedAt: -1 })
-        res.status(201).json({ message: "All Documents fetched", docs: docs })
+        const project = await Project.findById(req.params.projectId)
+
+        if (!project)
+            return res.status(404).json({ message: "Project not found" })
+
+        const userId = req.userId
+
+        const canView = project.owner.toString() === userId || project.collaborators.includes(userId) || project.viewers.includes(userId)
+
+        if (!canView)
+            return res.status(403).json({ message: "Access denied" })
+
+        const docs = await Document.find({ project: project._id })
+        res.json(docs)
+
     } catch (error) {
         console.error("Fetch Documents Error!", error)
         res.status(500).json({ message: "Server Error!" })
@@ -39,12 +58,25 @@ module.exports.getDocumentById = async (req, res) => {
     try {
         const doc = await Document.findById(req.params.id)
         if (!doc)
-            return res.status(404).json({ message: "Document Not Found!" })
+            return res.status(404).json({ message: "Document not found" })
 
-        if (doc.owner.toString() !== req.userId && !doc.collaborators.includes(req.userId))
-            return res.status(403).json({ message: "Access denied" })
+        const project = await Project.findById(doc.project)
+        const userId = req.userId
 
-        res.json(doc)
+        const isOwner = project.owner.toString() === userId
+        const isCollaborator = project.collaborators.includes(userId)
+        const isViewer = project.viewers.includes(userId)
+
+        if (!isOwner && !isCollaborator && !isViewer)
+            return res.status(403).json({ message: "Access denied" });
+
+        res.json({
+            document: doc,
+            permissions: {
+                canEdit: isOwner || isCollaborator,
+                canView: true
+            }
+        });
 
     } catch (error) {
         console.error("Fetch Document Error!", error)
@@ -52,23 +84,28 @@ module.exports.getDocumentById = async (req, res) => {
     }
 }
 
-// UPDATE DOCUMENT
+// UPDATE DOCUMENT (owner + collaborator)
 module.exports.updateDocument = async (req, res) => {
     try {
         const { name, content } = req.body
+        const io = req.app.get("io")
 
         const doc = await Document.findById(req.params.id)
         if (!doc)
             return res.status(404).json({ message: "Document not found" })
 
-        if (doc.owner.toString() !== req.userId && !doc.collaborators.includes(req.userId))      //Update By Owner And Collaborators only
+        const project = await Project.findById(doc.project)
+
+        const canEdit = project.owner.toString() === req.userId || project.collaborators.includes(req.userId)
+
+        if (!canEdit)
             return res.status(403).json({ message: "Access denied" })
 
-        doc.content = content || doc.content
         doc.name = name || doc.name
+        doc.content = content ?? doc.content
 
         await doc.save()
-
+        io.to(req.params.id).emit("document-update", doc.content)
         res.json({ message: "Document updated", document: doc })
 
     } catch (error) {
@@ -77,22 +114,25 @@ module.exports.updateDocument = async (req, res) => {
     }
 }
 
-// DELETE DOCUMENT
+// DELETE DOCUMENT (owner only)
 module.exports.deleteDocument = async (req, res) => {
     try {
         const doc = await Document.findById(req.params.id)
         if (!doc)
             return res.status(404).json({ message: "Document not found" })
 
-        if (doc.owner.toString() !== req.userId && !doc.collaborators.includes(req.userId))      // Delete By Owner Only
-            return res.status(403).json({ message: "Access denied" })
+        const project = await Project.findById(doc.project)
 
-        await doc.deleteOne()    
+        if (project.owner.toString() !== req.userId)
+            return res.status(403).json({ message: "Only owner can delete document" })
 
-        res.json({message: "Document Deleted."})
+        await doc.deleteOne()
+
+        res.json({ message: "Document Deleted." })
 
     } catch (error) {
         console.error("Delete Document Error!", error)
         res.status(500).json({ message: "Server Error!" })
     }
 }
+
