@@ -1,4 +1,5 @@
 const Document = require("../models/document.model")
+const AuditLog = require("../models/audit.model")
 
 // CREATE DOCUMENT
 module.exports.createDocument = async (req, res) => {
@@ -19,7 +20,16 @@ module.exports.createDocument = async (req, res) => {
             language: language || "C",
             project: projectId,
             createdBy: req.userId
-        });
+        })
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            document: doc._id,
+            action: "Created Document",
+            performedBy: req.userId,
+            details: "Document created"
+        })
 
         res.status(201).json({ message: "Document Created.", document: doc });
 
@@ -105,6 +115,16 @@ module.exports.updateDocument = async (req, res) => {
         doc.content = content ?? doc.content
 
         await doc.save()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            document: doc._id,
+            action: "Updated Document",
+            performedBy: req.userId,
+            details: "Document updated"
+        })
+
         io.to(req.params.id).emit("document-update", doc.content)
         res.json({ message: "Document updated", document: doc })
 
@@ -127,6 +147,15 @@ module.exports.deleteDocument = async (req, res) => {
             return res.status(403).json({ message: "Only owner can delete document" })
 
         await doc.deleteOne()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            document: doc._id,
+            action: "Delete Document",
+            performedBy: req.userId,
+            details: "Document deleted"
+        })
 
         res.json({ message: "Document Deleted." })
 

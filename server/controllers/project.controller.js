@@ -1,4 +1,5 @@
-const Project = require("../models/project.model");
+const Project = require("../models/project.model")
+const AuditLog = require("../models/audit.model")
 
 // CREATE PROJECT
 module.exports.createProject = async (req, res) => {
@@ -9,6 +10,14 @@ module.exports.createProject = async (req, res) => {
             name,
             description,
             owner: req.userId
+        })
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Project Created: " + name,
+            performedBy: req.userId,
+            details: "Created the project"
         })
 
         res.status(201).json({ message: "Project Created.", project: project })
@@ -87,6 +96,14 @@ module.exports.updateProject = async (req, res) => {
         project.description = req.body.description || project.description
 
         await project.save()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Project Updated: " + req.body.name || project.name,
+            performedBy: req.userId,
+            details: "Updated the project"
+        })
         res.json(project)
 
     } catch (err) {
@@ -106,7 +123,15 @@ module.exports.deleteProject = async (req, res) => {
         if (project.owner.toString() !== req.userId)
             return res.status(403).json({ message: "Only owner can delete project" })
 
-        await project.deleteOne();
+        await project.deleteOne()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Project Deleted: " + name,
+            performedBy: req.userId,
+            details: "Deleted the project"
+        })
         res.json({ message: "Project deleted" })
     } catch (err) {
         console.error("Project Delete Error.", err)
@@ -130,6 +155,15 @@ module.exports.addCollaborator = async (req, res) => {
             project.collaborators.push(userId)
 
         await project.save()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Collaborator Added",
+            performedBy: req.userId,
+            targetUser: userId,
+            details: "Collaborator added in the project"
+        })
         res.json(project)
 
     } catch (err) {
@@ -171,6 +205,15 @@ module.exports.deleteCollaborator = async (req, res) => {
         )
 
         await project.save()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Collaborator Removed",
+            performedBy: req.userId,
+            targetUser: userId,
+            details: "Collaborator removed in the project"
+        })
         res.json({ message: "Collaborator Removed." })
 
     } catch (err) {
@@ -197,6 +240,15 @@ exports.addViewer = async (req, res) => {
             project.viewers.push(userId)
 
         await project.save()
+
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Viewer Added",
+            performedBy: req.userId,
+            targetUser: userId,
+            details: "Viewer added in the project"
+        })
         res.json(project)
 
     } catch (err) {
@@ -239,6 +291,14 @@ exports.deleteViewer = async (req, res) => {
 
         await project.save()
 
+        // 🧾 AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Viewer Deleted",
+            performedBy: req.userId,
+            targetUser: userId,
+            details: "Viewer removed in the project"
+        })
         res.json({
             message: "Viewer removed successfully",
             project
@@ -248,3 +308,26 @@ exports.deleteViewer = async (req, res) => {
         res.status(500).json({ message: "Server error" })
     }
 }
+
+// GET AUDIT LOGS
+module.exports.getAuditLogs = async (req, res) => {
+    try {
+        const project = await Project.findById(req.params.id)
+
+        const hasAccess = project.owner.toString() === req.userId || project.collaborators.includes(req.userId) || project.viewers.includes(req.userId)
+
+        if (!hasAccess)
+            return res.status(403).json({ message: "Access denied" })
+
+        const logs = await AuditLog.find({ project: project._id })
+            .populate("performedBy", "name email")
+            .populate("targetUser", "name email")
+            .sort({ createdAt: -1 })
+
+        res.json(logs)
+    } catch (err) {
+        console.error("GET AUDIT LOGS ERROR:", err)
+        res.status(500).json({ message: "Server error" })
+    }
+};
+
