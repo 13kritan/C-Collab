@@ -152,14 +152,26 @@ module.exports.deleteCollaborator = async (req, res) => {
 
         // Cannot remove owner
         if (userId === project.owner.toString())
-            return res.status(400).json({ message: "Owner cannot be removed" });
+            return res.status(400).json({ message: "Owner cannot be removed" })
 
+        // Check if actively editing
+        const activeEditors = req.app.get("activeEditors")
+        const projectDocs = await Document.find({ project: project._id })
+        for (const doc of projectDocs) {
+            if (activeEditors[doc._id]?.has(userId)) {
+                return res.status(409).json({
+                    message: "Cannot remove user: they are currently editing a document"
+                })
+            }
+        }
+
+        // Remove Collaborator 
         project.collaborators = project.collaborators.filter(
             id => id.toString() !== userId
         )
 
         await project.save()
-        res.json({message: "Collaborator Removed."})
+        res.json({ message: "Collaborator Removed." })
 
     } catch (err) {
         console.error("Delete Collaborator Error.", err)
@@ -196,30 +208,43 @@ exports.addViewer = async (req, res) => {
 // REMOVE VIEWER (owner + collaborator)
 exports.deleteViewer = async (req, res) => {
     try {
-      const { userId } = req.body; 
-      const project = await Project.findById(req.params.id)
-  
-      if (!project)
-        return res.status(404).json({ message: "Project not found" })
-  
-      const isOwner = project.owner.toString() === req.userId
-      const isCollaborator = project.collaborators.includes(req.userId)
-  
-      if (!isOwner && !isCollaborator)
-        return res.status(403).json({ message: "Access denied" })
-  
-      project.viewers = project.viewers.filter(
-        id => id.toString() !== userId
-      )
-  
-      await project.save()
-  
-      res.json({
-        message: "Viewer removed successfully",
-        project
-      })
+        const { userId } = req.body;
+        const project = await Project.findById(req.params.id)
+
+        if (!project)
+            return res.status(404).json({ message: "Project not found" })
+
+        const isOwner = project.owner.toString() === req.userId
+        const isCollaborator = project.collaborators.includes(req.userId)
+
+        // Cannot remove owner
+        if (!isOwner && !isCollaborator)
+            return res.status(403).json({ message: "Access denied" })
+
+        // Check if actively editing
+        const activeEditors = req.app.get("activeEditors")
+        const projectDocs = await Document.find({ project: project._id })
+        for (const doc of projectDocs) {
+            if (activeEditors[doc._id]?.has(userId)) {
+                return res.status(409).json({
+                    message: "Cannot remove user: they are currently editing a document"
+                })
+            }
+        }
+
+        // Remove Viewer
+        project.viewers = project.viewers.filter(
+            id => id.toString() !== userId
+        )
+
+        await project.save()
+
+        res.json({
+            message: "Viewer removed successfully",
+            project
+        })
     } catch (err) {
-      console.error("REMOVE VIEWER ERROR:", err)
-      res.status(500).json({ message: "Server error" })
+        console.error("REMOVE VIEWER ERROR:", err)
+        res.status(500).json({ message: "Server error" })
     }
-  }
+}
