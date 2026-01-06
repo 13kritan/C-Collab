@@ -1,12 +1,16 @@
 const express = require("express")
 const cors  = require("cors")
 const dotenv = require("dotenv")
+const http = require("http")
 
 const connectDB = require("./config/connectDB")
 const corsOptions = require("./config/cors")
 
 const authRoutes = require("./routes/auth.routes")
 const documentRoutes = require("./routes/document.routes")
+const projectRoutes = require("./routes/project.routes")
+
+const { initSocket } = require("./socket");
 
 dotenv.config()
 
@@ -27,7 +31,16 @@ app.get("/", (req, res) => {
 // API ROUTES
 app.use("/api/auth", authRoutes)
 app.use("/api/document", documentRoutes)  
+app.use("/api/project", projectRoutes)  
 
+
+const server = http.createServer(app)
+
+//  SOCKET INIT
+initSocket(server, app)
+server.listen(5000, () => {
+  console.log("✅ Socket Server running on port 5000")
+})
 
 // SERVER STARTUP
 const PORT = process.env.PORT || 5000
