@@ -27,7 +27,7 @@ export default function useAuth() {
             const res = await axios.post(`${API_URL}/auth/login`, { email, password }, authConfig)
 
             localStorage.setItem("token", res.data.token)
-            localStorage.setItem("user", res.data.user)
+            localStorage.setItem("user", JSON.stringify(res.data.user));
             setUser(res.data.user)
             navigate('/')
             return res.data
@@ -54,7 +54,8 @@ export default function useAuth() {
             const res = await axios.post(`${API_URL}/auth/register`, { name, email, password }, authConfig)
 
             localStorage.setItem("token", res.data.token)
-            localStorage.setItem("user", res.data.user)
+            localStorage.setItem("user", JSON.stringify(res.data.user));
+
             setUser(res.data.user)
             navigate('/')
 
