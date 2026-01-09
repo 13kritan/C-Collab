@@ -3,8 +3,7 @@ import Login from '../components/Login';
 import Register from '../components/Register';
 
 const AuthPage = () => {
-    const [isLogin, setIsLogin] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [isLogin, setIsLogin] = useState(true)
     return (
         <div className="min-h-screen bg-[#0B0E14] flex items-center justify-center font-sans text-slate-200">
             {/* Subtle Background Mesh Gradient */}

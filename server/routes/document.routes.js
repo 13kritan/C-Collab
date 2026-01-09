@@ -7,10 +7,10 @@ const router = express.Router()
 router.use(auth)
 
 // CRUD
-router.post("/", createDocument)
 router.get("/:id", getDocumentById)
 router.put("/:id", updateDocument)
 router.delete("/:id", deleteDocument)
+router.post("/project/:projectId", createDocument)
 
 router.get("/:projectId/docs", getAllDocuments)
 

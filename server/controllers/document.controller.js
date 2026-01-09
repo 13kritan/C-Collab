@@ -1,22 +1,30 @@
 const Document = require("../models/document.model")
 const AuditLog = require("../models/audit.model")
+const Project = require("../models/project.model")
 
 // CREATE DOCUMENT
 module.exports.createDocument = async (req, res) => {
     try {
-        const { name, projectId, language } = req.body
-
+        const { name, language, content } = req.body
+        const projectId = req.params.projectId
         const project = await Project.findById(projectId)
         if (!project)
             return res.status(404).json({ message: "Project not found" })
 
-        const canEdit = project.owner.toString() === req.userId || project.collaborators.includes(req.userId)
-
+        const canEdit = project.owner.toString() === req.userId || project.collaborators.some((id) => id.toString() === req.userId)
         if (!canEdit)
             return res.status(403).json({ message: "Access denied" })
 
+        const checkDoc = await Document.findOne({
+            name,
+            project: projectId
+        })
+        if (checkDoc)
+            return res.status(403).json({ message: "Document exists." })
+
         const doc = await Document.create({
             name,
+            content: content,
             language: language || "C",
             project: projectId,
             createdBy: req.userId

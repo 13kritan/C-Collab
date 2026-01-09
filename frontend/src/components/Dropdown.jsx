@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { UserMinus } from 'lucide-react'
 import useAuth from '../hooks/useAuth'
@@ -10,7 +10,7 @@ const ProfileDropdown = ({ menuItems, dropdownRef, isOpen, setIsOpen }) => {
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-                setIsOpen(false);
+                setIsOpen(false)
             }
         }
         document.addEventListener('mousedown', handleClickOutside)

@@ -2,10 +2,12 @@ import React, { useRef, useState } from 'react'
 import { Search, Plus } from 'lucide-react'
 import { User, Settings, Terminal, Shield } from 'lucide-react'
 import ProfileDropdown from './Dropdown';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
+  const navigate = useNavigate()
 
   const menuItems = [
     { label: 'Profile', icon: <User size={14} />, detail: '0xAF31...' },
@@ -32,7 +34,8 @@ const Navbar = () => {
       {/* Right Section: Actions & Profile */}
       <div className="flex items-center gap-4">
         {/* New Project Button */}
-        <button className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-slate-100 text-xs font-bold py-2 px-4 rounded-md transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] active:scale-95 cursor-pointer">
+        <button onClick={() => navigate('/create')}
+          className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-slate-100 text-xs font-bold py-2 px-4 rounded-md transition-all shadow-[0_0_15px_rgba(59,130,246,0.3)] active:scale-95 cursor-pointer">
           <Plus size={16} strokeWidth={3} />
           <span>New Project</span>
         </button>
@@ -40,8 +43,8 @@ const Navbar = () => {
         {/* User Profile */}
         <div className="relative flex items-center gap-2 pl-2 border-l border-white/[0.1]">
           <div onClick={() => setIsOpen(!isOpen)}
-          ref={dropdownRef} 
-          className="h-8 w-8 rounded-full overflow-hidden border border-accent-blue shadow-[0_0_8px_rgba(59,130,246,0.5)] cursor-pointer">
+            ref={dropdownRef}
+            className="h-8 w-8 rounded-full overflow-hidden border border-accent-blue shadow-[0_0_8px_rgba(59,130,246,0.5)] cursor-pointer">
             <img
               src="/api/placeholder/32/32" // Replace with your avatar source
               alt="User"

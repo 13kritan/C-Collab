@@ -71,7 +71,9 @@ export default function useAuth() {
     // LOGOUT
     const logout = async () => {
         localStorage.removeItem("token")
+        localStorage.removeItem("user")
         setUser(null)
+        navigate('/auth')
     }
 
     return {

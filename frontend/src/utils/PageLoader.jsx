@@ -48,8 +48,8 @@ export const InlineCloader = () => {
 
 export const CardSkeleton = () => {
   return (
-    <div className="p-8">
-      <div className="relative h-52 w-72 overflow-hidden rounded-xl border border-slate-800 bg-[#161b22] p-6">
+    <div className="">
+      <div className="relative h-48 overflow-hidden rounded-xl border border-slate-800 bg-[#161b22] p-6">
         
         {/* The Shimmer Effect: Moves slowly across the background */}
         <div className="absolute inset-0 -translate-x-full animate-[shimmer_3s_infinite] bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />

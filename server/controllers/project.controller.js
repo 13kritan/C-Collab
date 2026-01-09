@@ -5,7 +5,6 @@ const AuditLog = require("../models/audit.model")
 module.exports.createProject = async (req, res) => {
     try {
         const { name, description } = req.body
-
         const project = await Project.create({
             name,
             description,
@@ -128,7 +127,7 @@ module.exports.deleteProject = async (req, res) => {
         // 🧾 AUDIT LOG
         await AuditLog.create({
             project: project._id,
-            action: "Project Deleted: " + name,
+            action: "Project Deleted: " + project.name,
             performedBy: req.userId,
             details: "Deleted the project"
         })

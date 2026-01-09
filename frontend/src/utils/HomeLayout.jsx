@@ -6,7 +6,6 @@ import { AuthContext } from "../context/AuthContext"
 
 const LandingLayout = () => {
     const user  = useContext(AuthContext)
-
     if (!user) 
       return <Navigate to="/auth" replace />
 
