@@ -9,6 +9,7 @@ const Navbar = () => {
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
 
+  const checkLoc = true
   const menuItems = [
     { label: 'Profile', icon: <User size={14} />, detail: '0xAF31...' },
     { label: 'Settings', icon: <Settings size={14} /> },
@@ -51,7 +52,7 @@ const Navbar = () => {
               className="h-full w-full object-cover"
             />
             {
-              isOpen && <ProfileDropdown menuItems={menuItems} dropdownRef={dropdownRef} isOpen={isOpen} setIsOpen={setIsOpen} />
+              isOpen && <ProfileDropdown menuItems={menuItems} dropdownRef={dropdownRef} isOpen={isOpen} setIsOpen={setIsOpen} checkLoc={checkLoc} />
             }
           </div>
         </div>

@@ -10,23 +10,6 @@ export const useDocument = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
-  // Fetch Document By Project
-  const fetchDocumentsByProject = useCallback(async (projectId) => {
-    setLoading(true)
-    setError(null)
-    try {
-      console.log(projectId)
-      const res = await axios.get(
-        `${API}/document/${projectId}/docs`,
-        authConfig()
-      )
-      setDocuments(res.data)
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to fetch documents")
-    } finally {
-      setLoading(false)
-    }
-  }, [])
 
   //   Fetch Document By Id
   const fetchDocumentById = useCallback(async (docId) => {
@@ -37,7 +20,8 @@ export const useDocument = () => {
         `${API}/document/${docId}`,
         authConfig()
       )
-      setDocument(res.data)
+      setDocument(res.data.document)
+      return res.data.document
     } catch (err) {
       setError(err.response?.data?.message || "Failed to fetch document")
     } finally {
@@ -110,6 +94,23 @@ export const useDocument = () => {
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete document")
       throw err
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  // Fetch Document By Project
+  const fetchDocumentsByProject = useCallback(async (projectId) => {
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await axios.get(
+        `${API}/document/${projectId}/docs`,
+        authConfig()
+      )
+      setDocuments(res.data)
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to fetch documents")
     } finally {
       setLoading(false)
     }

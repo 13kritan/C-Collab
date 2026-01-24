@@ -4,16 +4,14 @@ import { useParams } from 'react-router-dom'
 import { useProject } from '../hooks/useProject'
 import Documents from '../components/Documents'
 import ProjectUpdateForm from '../components/UpdateProject'
+import IDE from '../components/IDE'
 
 const ProjectView = () => {
     const { id } = useParams()
     const { fetchProjectById } = useProject()
     const [projectDetails, setProjectDetails] = useState()
     const [docClick, setDocClick] = useState(false)
-
-    const onDocClick = () => {
-        setDocClick(true)
-    }
+    const [currentDocId, setCurrentDocId] = useState()
 
     useEffect(() => {
         async function fetch() {
@@ -22,6 +20,13 @@ const ProjectView = () => {
         }
         fetch()
     }, [id])
+
+    // On Document Click
+    const handleDocClick = (docId) => {
+        console.log("DocId: " + docId)
+        setCurrentDocId(docId)
+        setDocClick(true)
+    }
 
     const [activeTab, setActiveTab] = useState("Explorer")
     const navItems = [
@@ -38,26 +43,27 @@ const ProjectView = () => {
     ]
     const renderContent = () => {
         switch (activeTab) {
-          case "Explorer":
-            return (
-              <Documents
-                projectDetails={projectDetails}
-                docClick={docClick}
-              />
-            )
-      
-          case "Update":
-            return (
-              <ProjectUpdateForm
-                projectDetails={projectDetails}
-                docClick={docClick}
-              />
-            )
-      
-          default:
-            return null
+            case "Explorer":
+                return (
+                    <Documents
+                        projectDetails={projectDetails}
+                        docClick={docClick}
+                        handleDocClick={handleDocClick}
+                    />
+                )
+
+            case "Update":
+                return (
+                    <ProjectUpdateForm
+                        projectDetails={projectDetails}
+                        docClick={docClick}
+                    />
+                )
+
+            default:
+                return null
         }
-      }      
+    }
 
     return (
         <div className="flex h-full bg-workspace-dark text-slate-300 animate-in fade-in duration-500">
@@ -94,7 +100,7 @@ const ProjectView = () => {
                         </nav>
 
                     </>
-                        : <Documents projectDetails={projectDetails} docClick={docClick} onDocClick={onDocClick} />
+                        : <Documents projectDetails={projectDetails} docClick={docClick} handleDocClick={handleDocClick} />
 
                 }
 
@@ -106,10 +112,8 @@ const ProjectView = () => {
             {
                 !docClick ?
                     renderContent()
-                    : <div className='w-full h-full bg-bg-surface'>hello</div>
+                    : <IDE docId={currentDocId} setDocClick={setDocClick}  />
             }
-
-
 
         </div>
     );

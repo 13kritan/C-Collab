@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MoreVertical, FileText, ChevronRight, HardDrive, Search, ExternalLink, Plus } from 'lucide-react'
+import { MoreVertical, FileText, ChevronRight, HardDrive, Search, ExternalLink, Plus, Trash2 } from 'lucide-react'
 import { useDocument } from '../hooks/useDocument'
 import { InlineCloader } from '../utils/PageLoader'
 
-export default function Documents({ projectDetails, docClick }) {
-    const { documents, fetchDocumentsByProject, createDocument, loading } = useDocument()
+export default function Documents({ projectDetails, docClick, handleDocClick }) {
+    const { documents, fetchDocumentsByProject, createDocument, deleteDocument, loading } = useDocument()
     const inputRef = useRef(null)
     const [newDocClick, setNewDocClick] = useState(false)
     const [data, setData] = useState({
@@ -15,7 +15,6 @@ export default function Documents({ projectDetails, docClick }) {
     // Auto Fetch Documents
     useEffect(() => {
         if (!projectDetails?._id) return
-
         fetchDocumentsByProject(projectDetails._id)
     }, [projectDetails?._id, fetchDocumentsByProject])
 
@@ -33,14 +32,14 @@ export default function Documents({ projectDetails, docClick }) {
     // Add Doc Function
     const handleAddDocument = async () => {
         const projectId = projectDetails._id
-        console.log(projectId)
         const res = await createDocument(projectId, data)
         if (res) {
             setData({
                 name: '',
                 content: ''
             })
-            alert("Doc Added")
+            fetchDocumentsByProject(projectId)
+            setNewDocClick(false)
         }
         else alert("Doc Not Added")
     }
@@ -70,6 +69,24 @@ export default function Documents({ projectDetails, docClick }) {
         }
     }, [newDocClick])
 
+    // DropDown Document
+    const [openDocId, setOpenDocId] = useState(null)
+    const dropdownRef = useRef({})
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+          if (!openDocId) return
+      
+          const dropdownEl = dropdownRef.current[openDocId]
+          if (dropdownEl && !dropdownEl.contains(event.target)) {
+            setOpenDocId(null)
+          }
+        }
+      
+        document.addEventListener("mousedown", handleClickOutside)
+        return () => document.removeEventListener("mousedown", handleClickOutside)
+      }, [openDocId])
+
     return (
         <>
             <main className={`flex-1 flex flex-col ${docClick ? 'gap-3 h-full' : 'flex-1'}`}>
@@ -97,8 +114,8 @@ export default function Documents({ projectDetails, docClick }) {
                 </header>
 
                 {/* Folder List Grid */}
-                <div className={`overflow-y-auto flex flex-col-reverse gap-3 ${docClick ? 'p-3' : 'p-8'}`}>
-                    <div className="grid grid-cols-1 gap-[1px] bg-white/[0.05] border border-white/[0.05] rounded-lg overflow-hidden">
+                <div className={` flex flex-col-reverse gap-3 ${docClick ? 'p-3' : 'p-8'}`}>
+                    <div className="grid grid-cols-1 gap-[1px] bg-white/[0.05] border border-white/[0.05] rounded-lg">
                         {
                             newDocClick && <div
                                 className="group flex items-center justify-between px-6 py-3 bg-bg-subtle transition-colors cursor-pointer"
@@ -119,26 +136,64 @@ export default function Documents({ projectDetails, docClick }) {
                                 </div>
                             </div>
                         }
-                        {
-                            documents?.map((file, i) => (
-                                <div
-                                    key={i}
-                                    className="group flex items-center justify-between px-6 py-3 bg-workspace-dark hover:bg-accent-blue/[0.03] transition-colors cursor-pointer"
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <FileText size={18} className="text-blue-400/60" />
-                                        <span className="text-sm font-mono tracking-tight text-slate-300 group-hover:text-white">
-                                            {file.name}
-                                        </span>
-                                    </div>
-
-                                    <div className="flex items-center gap-8 font-mono text-[10px] text-slate-600">
-                                        <button className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-500 hover:text-white">
-                                            <MoreVertical size={16} />
-                                        </button>
-                                    </div>
+                        {documents?.map((file) => (
+                            <div
+                                key={file._id}
+                                className="relative group flex items-center justify-between px-6 bg-workspace-dark hover:bg-accent-blue/[0.03] transition-colors cursor-pointer"
+                            >
+                                <div onClick={()=>handleDocClick(file._id)}
+                                className="flex h-full py-3 items-center gap-4 flex-1 mr-4 text-slate-300 hover:text-accent-blue">
+                                    <FileText size={18} className="text-blue-400/60" />
+                                    <span className="text-sm font-mono tracking-tight ">
+                                        {file.name}
+                                    </span>
                                 </div>
-                            ))}
+
+                                <div className="relative  flex items-center gap-8 font-mono text-[10px] text-slate-600">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setOpenDocId((prev) =>
+                                                prev === file._id ? null : file._id
+                                            )
+                                        }}
+                                        className="opacity-0 group-hover:opacity-100 transition-opacity text-slate-500 hover:text-white"
+                                    >
+                                        <MoreVertical size={16} />
+                                    </button>
+
+                                    {openDocId === file._id && (
+                                        <div  ref={(el) => (dropdownRef.current[file._id] = el)}
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="doc-dropdown absolute right-0 top-4 w-56 origin-top-right bg-bg-primary border border-white/10 rounded-xl rounded-tr-none shadow-2xl z-50  animate-in fade-in zoom-in-95 duration-100"
+                                        >
+                                            {/* Update */}
+                                            <div className="py-1">
+                                                <button className="w-full flex items-center gap-3 px-4 py-2 text-xs font-mono text-slate-400 hover:text-accent-blue hover:bg-bg-main/10">
+                                                    <FileText size={14} />
+                                                    Update
+                                                </button>
+                                            </div>
+
+                                            {/* Delete */}
+                                            <div className="p-1 bg-red-600/20 hover:bg-red-600/50">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        deleteDocument(file._id)
+                                                        setOpenDocId(null)
+                                                    }}
+                                                    className="w-full rounded-md flex items-center gap-3 px-4 py-2 text-xs font-mono text-slate-300 hover:text-slate-100"
+                                                >
+                                                    <Trash2 size={14} />
+                                                    Delete
+                                                </button>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
                     </div>
                     {/* Empty State / Dropzone Suggestion */}
                     <div onClick={() => setNewDocClick(true)}

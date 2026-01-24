@@ -1,11 +1,13 @@
-const { Server } = require("socket.io");
-const jwt = require("jsonwebtoken");
+const { Server } = require("socket.io")
+const jwt = require("jsonwebtoken")
 
-const Project = require("./models/project.model");
-const Document = require("./models/document.model");
+const Project = require("./models/project.model")
+const Document = require("./models/document.model")
+
+const compilerSocket = require("./socket/compiler.socket")
 
 // documentId -> Set(userId)
-const activeEditors = {};
+const activeEditors = {}
 
 const initSocket = (server, app) => {
   const io = new Server(server, {
@@ -13,92 +15,95 @@ const initSocket = (server, app) => {
       origin: "*",
       methods: ["GET", "POST"]
     }
-  });
+  })
 
   // expose io & activeEditors
-  app.set("io", io);
-  app.set("activeEditors", activeEditors);
+  app.set("io", io)
+  app.set("activeEditors", activeEditors)
 
   // 🔐 SOCKET AUTH
   io.use((socket, next) => {
-    const token = socket.handshake.auth?.token;
-    if (!token) return next(new Error("Unauthorized"));
+    const token = socket.handshake.auth?.token
+    if (!token) return next(new Error("Unauthorized"))
 
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      socket.userId = decoded.id;
-      next();
+      const decoded = jwt.verify(token, process.env.JWT_SECRET)
+      socket.userId = decoded.userId
+      next()
     } catch {
-      next(new Error("Unauthorized"));
+      next(new Error("Unauthorized"))
     }
-  });
+  })
+
+  // Compiler Socket
+  compilerSocket(io)
 
   io.on("connection", (socket) => {
-    console.log("Socket connected:", socket.userId);
+    console.log("Socket connected:", socket.userId)
 
     // JOIN DOCUMENT
     socket.on("join-document", async ({ documentId }) => {
-      const doc = await Document.findById(documentId);
-      if (!doc) return socket.emit("error", "Document not found");
+      const doc = await Document.findById(documentId)
+      if (!doc) return socket.emit("error", "Document not found")
 
-      const project = await Project.findById(doc.project);
+      const project = await Project.findById(doc.project)
 
       const canView =
         project.owner.toString() === socket.userId ||
         project.collaborators.includes(socket.userId) ||
-        project.viewers.includes(socket.userId);
+        project.viewers.includes(socket.userId)
 
-      if (!canView) return socket.emit("error", "Access denied");
+      if (!canView) return socket.emit("error", "Access denied")
 
-      socket.join(documentId);
+      socket.join(documentId)
 
       if (!activeEditors[documentId])
-        activeEditors[documentId] = new Set();
+        activeEditors[documentId] = new Set()
 
-      activeEditors[documentId].add(socket.userId);
+      activeEditors[documentId].add(socket.userId)
 
-      socket.to(documentId).emit("user-joined", socket.userId);
-    });
+      socket.to(documentId).emit("user-joined", socket.userId)
+    })
 
     // LEAVE DOCUMENT
     socket.on("leave-document", ({ documentId }) => {
-      socket.leave(documentId);
-      activeEditors[documentId]?.delete(socket.userId);
+      socket.leave(documentId)
+      activeEditors[documentId]?.delete(socket.userId)
 
       if (activeEditors[documentId]?.size === 0)
-        delete activeEditors[documentId];
+        delete activeEditors[documentId]
 
-      socket.to(documentId).emit("user-left", socket.userId);
-    });
+      socket.to(documentId).emit("user-left", socket.userId)
+    })
 
     // REAL-TIME EDIT
     socket.on("document-change", async ({ documentId, content }) => {
-      const doc = await Document.findById(documentId);
-      if (!doc) return;
+      const doc = await Document.findById(documentId)
+      if (!doc) return
 
-      const project = await Project.findById(doc.project);
+      const project = await Project.findById(doc.project)
 
       const canEdit =
         project.owner.toString() === socket.userId ||
-        project.collaborators.includes(socket.userId);
+        project.collaborators.includes(socket.userId)
 
-      if (!canEdit) return;
+      if (!canEdit) return
 
-      doc.content = content;
-      await doc.save();
+      doc.content = content
+      await doc.save()
 
-      socket.to(documentId).emit("document-update", content);
-    });
+      socket.to(documentId).emit("document-update", content)
+    })
 
     socket.on("disconnect", () => {
       for (const docId in activeEditors) {
-        activeEditors[docId].delete(socket.userId);
+        activeEditors[docId].delete(socket.userId)
         if (activeEditors[docId].size === 0)
-          delete activeEditors[docId];
+          delete activeEditors[docId]
       }
-      console.log("Socket disconnected:", socket.userId);
-    });
-  });
-};
+      console.log("Socket disconnected:", socket.userId)
+    })
+  })
+}
 
-module.exports = { initSocket };
+module.exports = { initSocket }

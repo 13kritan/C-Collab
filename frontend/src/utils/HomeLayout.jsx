@@ -12,9 +12,9 @@ const LandingLayout = () => {
     return (
         <div className="min-h-screen relative w-full">
             <Navbar />
-            <div className="flex relative">
+            <div className="flex relative h-full">
                 <Sidebar />
-                <main className="mt-16 ml-72 p-4 w-full h-full">
+                <main className="pt-20 p-4 ml-64 min-h-screen w-full">
                     <Outlet />
                 </main>
             </div>
