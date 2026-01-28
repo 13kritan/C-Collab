@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react"
 import axios from "axios"
 import { authConfig } from "../utils/authConfig"
+import { toast } from 'react-toastify'
 
 const API = "http://localhost:5000/api"
 
@@ -45,6 +46,7 @@ export const useDocument = () => {
         authConfig()
       )
       setDocuments((prev) => [...prev, res.data])
+      toast.success(`[IO] WRITE_STDOUT: BUFFER_FLUSHED_TO_DISK`)
       return res.data
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create document")
@@ -91,8 +93,10 @@ export const useDocument = () => {
       setDocuments((prev) =>
         prev.filter((doc) => doc._id !== docId)
       )
+      toast.success(`[FS] RM: UNLINKING_SOURCE_FILE...`)
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete document")
+      toast.error("> ERR: INVALID_AUTH_ACTION")
       throw err
     } finally {
       setLoading(false)

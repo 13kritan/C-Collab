@@ -1,4 +1,6 @@
 import './App.css'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import AuthPage from './pages/AuthPage'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from './pages/Home';
@@ -12,6 +14,20 @@ import CreateProject from './pages/CreateProject';
 import ProjectView from './pages/Project';
 
 function App() {
+  const contextClass = {
+    success: "bg-[#0d1117] border-l-4 border-emerald-500",
+    error: "bg-[#0d1117] border-l-4 border-red-500",
+    info: "bg-[#0d1117] border-l-4 border-blue-500",
+    default: "bg-[#0d1117]",
+  }
+  const ideToastStyle = {
+    background: '#0d1117',
+    border: '1px solid #30363d',
+    borderRadius: '0px',
+    fontFamily: '"JetBrains Mono", "Fira Code", monospace',
+    fontSize: '12px',
+    boxShadow: 'none',
+  }
   return (
     <div className="App bg-bg-primary">
       <AuthProvider>
@@ -39,6 +55,17 @@ function App() {
 
         </BrowserRouter>
       </AuthProvider>
+      <ToastContainer
+        position="top-center"
+        toastClassName="ide-toast"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={true}
+        closeOnClick
+        icon={false}        
+        closeButton={false} 
+        toastStyle={ideToastStyle} 
+      />
     </div>
   )
 }

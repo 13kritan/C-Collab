@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Folder, Database } from 'lucide-react'
+import { Folder, Database, Users2 } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useProject } from '../hooks/useProject'
 import Documents from '../components/Documents'
 import ProjectUpdateForm from '../components/UpdateProject'
 import IDE from '../components/IDE'
+import MembersTab from '../components/Members'
 
 const ProjectView = () => {
     const { id } = useParams()
@@ -16,7 +17,7 @@ const ProjectView = () => {
     useEffect(() => {
         async function fetch() {
             const res = await fetchProjectById(id)
-            setProjectDetails(res.project)
+            setProjectDetails(res?.project)
         }
         fetch()
     }, [id])
@@ -40,6 +41,11 @@ const ProjectView = () => {
             label: "Update",
             icon: Database,
         },
+        {
+            key: "Members",
+            label: "Members",
+            icon: Users2,
+        },
     ]
     const renderContent = () => {
         switch (activeTab) {
@@ -60,6 +66,13 @@ const ProjectView = () => {
                     />
                 )
 
+            case "Members":
+                return (
+                    <MembersTab
+                        projectDetails={projectDetails}
+                    />
+                )
+
             default:
                 return null
         }
@@ -70,6 +83,7 @@ const ProjectView = () => {
 
             {/* 1. Project Sub-Sidebar (Options) */}
             <aside className="w-60 border-r border-white/[0.05] bg-workspace-card/30 flex flex-col">
+
                 {
                     !docClick ? <>
                         <div className="p-6 border-b border-white/[0.05]">
@@ -112,7 +126,7 @@ const ProjectView = () => {
             {
                 !docClick ?
                     renderContent()
-                    : <IDE docId={currentDocId} setDocClick={setDocClick}  />
+                    : <IDE docId={currentDocId} setDocClick={setDocClick} />
             }
 
         </div>

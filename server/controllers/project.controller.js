@@ -1,5 +1,6 @@
 const Project = require("../models/project.model")
 const AuditLog = require("../models/audit.model")
+const Document = require("../models/document.model")
 
 // CREATE PROJECT
 module.exports.createProject = async (req, res) => {
@@ -50,9 +51,10 @@ module.exports.getMyProjects = async (req, res) => {
 module.exports.getProjectById = async (req, res) => {
     try {
         const project = await Project.findById(req.params.id)
-            .populate("owner", "username email")
-            .populate("collaborators", "username email")
-            .populate("viewers", "username email")
+            .populate("owner", "name email")
+            .populate("collaborators", "name email")
+            .populate("viewers", "name email")
+
 
         if (!project)
             return res.status(404).json({ message: "Project not found" })
@@ -259,7 +261,8 @@ exports.addViewer = async (req, res) => {
 // REMOVE VIEWER (owner + collaborator)
 exports.deleteViewer = async (req, res) => {
     try {
-        const { userId } = req.body;
+        const { userId } =  req.body
+        console.log(userId)
         const project = await Project.findById(req.params.id)
 
         if (!project)

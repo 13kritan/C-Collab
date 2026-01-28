@@ -1,10 +1,60 @@
 @keyframes loading {
-    0% { width: 0% }
-    50% { width: 70% }
-    100% { width: 100% }
+  0% {
+    width: 0%
   }
-  
-  .animate-loading {
-    animation: loading 1.2s ease-in-out infinite;
+
+  50% {
+    width: 70%
   }
- 
+
+  100% {
+    width: 100%
+  }
+}
+
+.animate-loading {
+  animation: loading 1.2s ease-in-out infinite;
+}
+
+/* Force the container to handle the layout */
+.Toastify__toast-container {
+  width: auto !important;
+  min-width: 320px !important;
+}
+
+/* Force the toast appearance */
+div.Toastify__toast {
+  background-color: #0d1117 !important; /* GitHub Canvas */
+  border: 1px solid #30363d !important;
+  border-radius: 0px !important;        /* Strict sharp corners */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  margin-bottom: 8px !important;
+  padding: 12px !important;
+}
+
+/* Force the text/font */
+.Toastify__toast-body {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace !important;
+  font-size: 12px !important;
+  color: #c9d1d9 !important;
+  padding: 0 !important;
+  align-items: center !important;
+}
+
+/* Force status indicators (Left side accent) */
+.Toastify__toast--success { border-left: 3px solid #238636 !important; }
+.Toastify__toast--error { border-left: 3px solid #f85149 !important; }
+.Toastify__toast--info { border-left: 3px solid #388bfd !important; }
+
+/* Force hide icons and close buttons for the "Log" look */
+.Toastify__toast-icon, 
+.Toastify__close-button {
+  display: none !important;
+}
+
+/* Force the progress bar to be a thin line */
+.Toastify__progress-bar {
+  height: 2px !important;
+  background-color: #30363d !important;
+  bottom: 0 !important;
+}

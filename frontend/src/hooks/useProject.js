@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react"
 import axios from "axios"
 import { authConfig } from "../utils/authConfig"
+import { toast } from 'react-toastify'
 
 const API = "http://localhost:5000/api"
 
@@ -66,6 +67,7 @@ export const useProject = () => {
                 authConfig()
             )
             setProjects((prev) => [...prev, res.data.project])
+            toast.success(`[PROC] INIT_SUCCESS: PROJECT_DIR_CREATED`)
             return res.data.project
         } catch (err) {
             setError(err.response?.data?.message || "Failed to create project")
@@ -91,6 +93,7 @@ export const useProject = () => {
             setProjects((prev) =>
                 prev.map((p) => (p._id === projectId ? res.data : p))
             )
+            toast.success(`[CONF] MOD_CONFIG: SETTINGS_SYNC_OK`)
             return res.data
         } catch (err) {
             setError(err.response?.data?.message || "Failed to update project")
@@ -107,6 +110,7 @@ export const useProject = () => {
         try {
             const res = await axios.delete(`${API}/project/${projectId}`, authConfig())
             setProjects((prev) => prev.filter((p) => p._id !== projectId))
+            toast.success(`[PROC] DESTRUCT: ALL_RESOURCES_WIPED`)
             return res
         } catch (err) {
             setError(err.response?.data?.message || "Failed to delete project")
@@ -116,6 +120,43 @@ export const useProject = () => {
         }
     }
 
+    // Delete Project
+    const deleteCollaborator = async (projectId, id) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const res = await axios.delete(`${API}/project/deletecollab/${projectId}`,{
+                ...authConfig(),
+                data: { id },
+              })
+            toast.success(`[PROC] DESTRUCT: ALL_RESOURCES_WIPED`)
+            return res
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to delete collaborator")
+            throw err
+        } finally {
+            setLoading(false)
+        }
+    }
+
+    // Delete Project
+    const deleteViewer = async (projectId, id) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const res = await axios.delete(`${API}/project/deleteviewer/${projectId}`,{
+                ...authConfig(),
+                data: { userId: id },
+              })
+            toast.success(`[PROC] DESTRUCT: ALL_RESOURCES_WIPED`)
+            return res
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to delete collaborator")
+            throw err
+        } finally {
+            setLoading(false)
+        }
+    }
     //   Auto-Fetch Project On Mount
     useEffect(() => {
         fetchProjects()
@@ -131,6 +172,8 @@ export const useProject = () => {
         fetchSharedProjects,
         createProject,
         updateProject,
-        deleteProject
+        deleteProject,
+        deleteCollaborator,
+        deleteViewer
     }
 }

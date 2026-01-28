@@ -24,15 +24,12 @@ const ProjectUpdateForm = ({ projectDetails }) => {
     const handleUpdate = async () => {
         const projectId = projectDetails._id
         const res = await updateProject(projectId, data)
-        if (res) alert("Updated")
-        else alert(res+ "error")
     }
 
     const handleDelete = async () => {
         const projectId = projectDetails._id
         const res = await deleteProject(projectId)
         if(res) {
-            console.log(res)
             navigate('/home')
         }
         else alert('Failed')

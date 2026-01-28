@@ -15,10 +15,10 @@ router.delete("/:id", deleteProject)
 
 // PROJECT MEMBERS
 router.post("/:id/collaborators", addCollaborator)
-router.delete("/:id/collaborators", deleteCollaborator)
+router.delete("/deletecollab/:id", deleteCollaborator)
 
 router.post("/:id/viewers", addViewer)
-router.delete("/:id/viewers", deleteViewer)
+router.delete("/deleteviewer/:id", deleteViewer)
 
 // AUDIT LOG
 router.get("/:id/auditlogs", getAuditLogs)

@@ -4,7 +4,7 @@ import { useDocument } from '../hooks/useDocument'
 import { InlineCloader } from '../utils/PageLoader'
 
 export default function Documents({ projectDetails, docClick, handleDocClick }) {
-    const { documents, fetchDocumentsByProject, createDocument, deleteDocument, loading } = useDocument()
+    const { documents, fetchDocumentsByProject, createDocument, deleteDocument, loading, error } = useDocument()
     const inputRef = useRef(null)
     const [newDocClick, setNewDocClick] = useState(false)
     const [data, setData] = useState({

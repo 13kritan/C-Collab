@@ -150,9 +150,10 @@ module.exports.deleteDocument = async (req, res) => {
             return res.status(404).json({ message: "Document not found" })
 
         const project = await Project.findById(doc.project)
+        const canDelete = project.owner.toString() === req.userId || project.collaborators.includes(req.userId)
 
-        if (project.owner.toString() !== req.userId)
-            return res.status(403).json({ message: "Only owner can delete document" })
+        if (!canDelete)
+            return res.status(403).json({ message: "Only owner and collaborator can delete document" })
 
         await doc.deleteOne()
 

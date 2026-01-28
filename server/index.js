@@ -10,6 +10,7 @@ const authRoutes = require("./routes/auth.routes")
 const documentRoutes = require("./routes/document.routes")
 const projectRoutes = require("./routes/project.routes")
 const compileRoutes = require("./routes/compiler.routes")
+const inviteRoutes = require("./routes/invite.routes")
 
 const { initSocket } = require("./socket")
 
@@ -28,6 +29,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/document", documentRoutes)
 app.use("/api/project", projectRoutes)
 app.use("/api/compile", compileRoutes)
+app.use("/api/invite", inviteRoutes)
 
 // ✅ SINGLE SERVER
 const server = http.createServer(app)
