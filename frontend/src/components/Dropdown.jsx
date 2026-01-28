@@ -31,7 +31,7 @@ const ProfileDropdown = ({ menuItems, dropdownRef, isOpen, setIsOpen, checkLoc }
                     {/* Header Section */}
                     {checkLoc &&
                         <div className="px-4 py-3 border-b border-white/[0.05] bg-bg-main/10">
-                            <p className="text-xs font-mono text-slate-400 uppercase tracking-widest">Developer</p>
+                            <p className="text-xs font-mono text-slate-400 uppercase tracking-widest">Developer <span className='font-semibold text-slate-500'>{user.user?.name}</span></p>
                             <p className="text-sm font-bold text-slate-100 truncate">{user.user?.email}</p>
                         </div>
                     }

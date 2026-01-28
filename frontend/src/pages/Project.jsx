@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Folder, Database, Users2 } from 'lucide-react'
 import { useParams } from 'react-router-dom'
 import { useProject } from '../hooks/useProject'
@@ -6,6 +6,7 @@ import Documents from '../components/Documents'
 import ProjectUpdateForm from '../components/UpdateProject'
 import IDE from '../components/IDE'
 import MembersTab from '../components/Members'
+import { AuthContext } from '../context/AuthContext'
 
 const ProjectView = () => {
     const { id } = useParams()
@@ -13,6 +14,7 @@ const ProjectView = () => {
     const [projectDetails, setProjectDetails] = useState()
     const [docClick, setDocClick] = useState(false)
     const [currentDocId, setCurrentDocId] = useState()
+    const user = useContext(AuthContext)
 
     useEffect(() => {
         async function fetch() {
@@ -78,6 +80,10 @@ const ProjectView = () => {
         }
     }
 
+    const isViewer = projectDetails?.viewers?.some(
+        (c) => c._id === user?.user?.id
+    )
+
     return (
         <div className="flex h-full bg-workspace-dark text-slate-300 animate-in fade-in duration-500">
 
@@ -126,7 +132,7 @@ const ProjectView = () => {
             {
                 !docClick ?
                     renderContent()
-                    : <IDE docId={currentDocId} setDocClick={setDocClick} />
+                    : <IDE docId={currentDocId} setDocClick={setDocClick} isViewer={isViewer} />
             }
 
         </div>

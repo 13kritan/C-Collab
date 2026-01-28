@@ -5,9 +5,11 @@ import Editor from '@monaco-editor/react'
 import Output from './Output'
 import useCompilerSocket from "../hooks/useCompilerSocket"
 
-export default function IDE({ docId, setDocClick }) {
+export default function IDE({ docId, setDocClick, isViewer }) {
     const { loading, fetchDocumentById, updateDocument } = useDocument()
     const { runCode, sendInput, output, running, awaitingInput } = useCompilerSocket()
+
+    console.log(isViewer)
 
     const [doc, setDoc] = useState()
     const [saved, setSaved] = useState(false)
@@ -39,9 +41,9 @@ export default function IDE({ docId, setDocClick }) {
     const handleRun = () => {
         if (!code?.trim()) return
         runCode(code)
-      }
-      
-      
+    }
+
+
 
     useEffect(() => {
         if (!docId) return
@@ -111,19 +113,20 @@ export default function IDE({ docId, setDocClick }) {
                         <span>{doc?.name}.c</span>
                     </div>
                 </div>
-
-                <button
-                    onClick={handleSave}
-                    disabled={loading}
-                    className={`flex items-center gap-2 mr-5 px-3 py-1 rounded border text-xs font-mono transition-all
+                {!isViewer &&
+                    <button
+                        onClick={handleSave}
+                        disabled={loading}
+                        className={`flex items-center gap-2 mr-5 px-3 py-1 rounded border text-xs font-mono transition-all
             ${saved
-                            ? 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10'
-                            : 'border-blue-500/50 text-blue-400 bg-blue-500/10 hover:bg-blue-500/20'}
+                                ? 'border-emerald-500/50 text-emerald-400 bg-emerald-500/10'
+                                : 'border-blue-500/50 text-blue-400 bg-blue-500/10 hover:bg-blue-500/20'}
           `}
-                >
-                    {loading ? <Loader2 size={12} className="animate-spin" /> : saved ? <Check size={12} /> : <Save size={12} />}
-                    {loading ? 'Saving...' : saved ? 'Saved' : 'Save'}
-                </button>
+                    >
+                        {loading ? <Loader2 size={12} className="animate-spin" /> : saved ? <Check size={12} /> : <Save size={12} />}
+                        {loading ? 'Saving...' : saved ? 'Saved' : 'Save'}
+                    </button>
+                }
             </div>
 
 
@@ -190,6 +193,7 @@ export default function IDE({ docId, setDocClick }) {
                                 beforeMount={handleEditorWillMount}
                                 loading={<div className="text-slate-500 font-mono text-xs animate-pulse p-10">Initializing Kernel Editor...</div>}
                                 options={{
+                                    readOnly: isViewer,
                                     fontFamily: 'JetBrains Mono, Menlo, monospace',
                                     fontSize: 13,
                                     minimap: { enabled: false },

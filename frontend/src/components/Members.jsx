@@ -193,11 +193,11 @@ const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, delete
     <div className="group flex items-center justify-between py-3 px-3 hover:bg-[#161b22] rounded-md transition-all border border-transparent hover:border-gray-800 mb-1">
         <div className="flex items-center gap-4">
             <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs shadow-inner ${isOwner ? 'bg-blue-900/30 text-blue-400' : 'bg-gray-800 text-gray-400'}`}>
-                {getInitials(member.name)}
+                {getInitials(member?.name)}
             </div>
             <div>
-                <div className="text-sm text-gray-200 font-medium">{member.name}</div>
-                <div className="text-[11px] text-gray-500 font-mono tracking-tight">{member.email}</div>
+                <div className="text-sm text-gray-200 font-medium">{member?.name}</div>
+                <div className="text-[11px] text-gray-500 font-mono tracking-tight">{member?.email}</div>
             </div>
         </div>
 
