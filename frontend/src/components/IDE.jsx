@@ -4,12 +4,12 @@ import { useDocument } from '../hooks/useDocument'
 import Editor from '@monaco-editor/react'
 import Output from './Output'
 import useCompilerSocket from "../hooks/useCompilerSocket"
+import DocAudit from './DocAudit'
 
 export default function IDE({ docId, setDocClick, isViewer }) {
     const { loading, fetchDocumentById, updateDocument } = useDocument()
     const { runCode, sendInput, output, running, awaitingInput } = useCompilerSocket()
 
-    console.log(isViewer)
 
     const [doc, setDoc] = useState()
     const [saved, setSaved] = useState(false)
@@ -100,7 +100,7 @@ export default function IDE({ docId, setDocClick, isViewer }) {
     return (
         <div className='w-full h-full bg-bg-primary p-2 flex flex-col'>
             {/* Headers */}
-            <div className="header flex items-center justify-between ">
+            <div className="relative header flex items-center justify-between ">
                 <div className='flex items-center py-2 '>
                     <button onClick={() => setDocClick(false)}
                         className="flex items-center gap-2 text-slate-400 hover:text-accent-blue transition-all mr-4 group font-mono text-[10px] uppercase tracking-[0.4em]">
@@ -113,6 +113,9 @@ export default function IDE({ docId, setDocClick, isViewer }) {
                         <span>{doc?.name}.c</span>
                     </div>
                 </div>
+
+                <DocAudit docId={docId} />
+
                 {!isViewer &&
                     <button
                         onClick={handleSave}

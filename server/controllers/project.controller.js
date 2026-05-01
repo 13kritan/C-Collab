@@ -315,6 +315,7 @@ exports.deleteViewer = async (req, res) => {
 module.exports.getAuditLogs = async (req, res) => {
     try {
         const project = await Project.findById(req.params.id)
+        console.log(project)
 
         const hasAccess = project.owner.toString() === req.userId || project.collaborators.includes(req.userId) || project.viewers.includes(req.userId)
 

@@ -100,6 +100,7 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                             <span className="text-slate-300">{projectDetails?.name}</span>
                         </div>
                     </div>
+
                     <div className={`flex items-center gap-3`}>
                         <div className="relative">
                             <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600" size={14} />

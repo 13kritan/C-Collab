@@ -7,6 +7,7 @@ import ProjectUpdateForm from '../components/UpdateProject'
 import IDE from '../components/IDE'
 import MembersTab from '../components/Members'
 import { AuthContext } from '../context/AuthContext'
+import AuditSideBar from '../components/AuditSideBar'
 
 const ProjectView = () => {
     const { id } = useParams()
@@ -118,6 +119,8 @@ const ProjectView = () => {
                                 );
                             })}
                         </nav>
+
+                        {projectDetails && <AuditSideBar projectId={projectDetails?._id} />}
 
                     </>
                         : <Documents projectDetails={projectDetails} docClick={docClick} handleDocClick={handleDocClick} />

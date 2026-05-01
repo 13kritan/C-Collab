@@ -125,10 +125,10 @@ export const useProject = () => {
         setLoading(true)
         setError(null)
         try {
-            const res = await axios.delete(`${API}/project/deletecollab/${projectId}`,{
+            const res = await axios.delete(`${API}/project/deletecollab/${projectId}`, {
                 ...authConfig(),
                 data: { id },
-              })
+            })
             toast.success(`[PROC] DESTRUCT: ALL_RESOURCES_WIPED`)
             return res
         } catch (err) {
@@ -144,10 +144,10 @@ export const useProject = () => {
         setLoading(true)
         setError(null)
         try {
-            const res = await axios.delete(`${API}/project/deleteviewer/${projectId}`,{
+            const res = await axios.delete(`${API}/project/deleteviewer/${projectId}`, {
                 ...authConfig(),
                 data: { userId: id },
-              })
+            })
             toast.success(`[PROC] DESTRUCT: ALL_RESOURCES_WIPED`)
             return res
         } catch (err) {
@@ -157,6 +157,22 @@ export const useProject = () => {
             setLoading(false)
         }
     }
+
+    // Fetch Project By Id
+    const fetchAuditLogs = async (id) => {
+        setLoading(true)
+        setError(null)
+        try {
+            const res = await axios.get(`${API}/project/${id}/auditlogs`, authConfig())
+         
+            return res.data
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to fetch shared projects")
+        } finally {
+            setLoading(false)
+        }
+    }
+
     //   Auto-Fetch Project On Mount
     useEffect(() => {
         fetchProjects()
@@ -173,6 +189,7 @@ export const useProject = () => {
         createProject,
         updateProject,
         deleteProject,
+        fetchAuditLogs,
         deleteCollaborator,
         deleteViewer
     }
