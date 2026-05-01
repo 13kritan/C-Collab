@@ -10,7 +10,7 @@ const runCCode = async (req, res) => {
         return res.status(400).json({ error: "No code provided" });
     }
 
-    // Generate a unique ID using built-in crypto (works in CommonJS perfectly)
+    // Generate a unique ID
     const jobId = crypto.randomUUID();
     
     // Create paths

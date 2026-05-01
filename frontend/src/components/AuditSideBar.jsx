@@ -71,7 +71,7 @@ const AuditSidebar = ({ projectId }) => {
                                     <div className="text-[11px] text-white group-hover:text-[#c9d1d9] transition-colors break-words leading-tight">
                                         {log.performedBy?.name}
                                     </div>
-                                    <div className="text-[11px] text-[#8b949e] group-hover:text-[#c9d1d9] transition-colors break-words leading-tight">
+                                    <div className="text-[11px] text-red-300 group-hover:text-[#c9d1d9] transition-colors break-words leading-tight">
                                         {log.targetUser?.name}
                                     </div>
                                 </div>
