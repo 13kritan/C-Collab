@@ -101,17 +101,7 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                         </div>
                     </div>
 
-                    <div className={`flex items-center gap-3`}>
-                        <div className="relative">
-                            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-600" size={14} />
-                            <input
-                                type="text"
-                                placeholder="Find in files..."
-                                className={`bg-white/[0.03] border border-white/[0.05] rounded py-1 pl-9 pr-3 text-xs focus:outline-none focus:border-accent-blue/50 transition-all ${docClick ? 'w-32' : 'w-48'}`}
-                            />
-                        </div>
-                        <button className="p-2 text-slate-500 hover:text-white transition-colors"><ExternalLink size={16} /></button>
-                    </div>
+                    
                 </header>
 
                 {/* Folder List Grid */}
