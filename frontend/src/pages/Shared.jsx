@@ -22,7 +22,7 @@ export default function Shared() {
               <CardSkeleton key={i} />
             )) :
               user &&
-              projects?.filter(project => project.owner === user.user.id).map((project, index) => (
+              projects?.filter(project => project.owner === user.user._id).map((project, index) => (
                 <ProjectCard key={index} collabCount={collabCount} {...project} />
               ))
           }

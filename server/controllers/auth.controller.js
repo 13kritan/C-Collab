@@ -47,7 +47,7 @@ module.exports.loginUser = async (req, res) => {
         const token = jwt.sign(
             { userId: user._id, },
             process.env.JWT_SECRET,
-            {expiresIn: "5d"}
+            { expiresIn: "5d" }
         )
 
         res.json({
@@ -60,6 +60,24 @@ module.exports.loginUser = async (req, res) => {
         })
     } catch (error) {
         console.error("Login Error! : ", error)
-        res.status(500).json({message: "Server Error!"})
+        res.status(500).json({ message: "Server Error!" })
+    }
+}
+
+// EDIT USER
+module.exports.editUser = async (req, res) => {
+    try {
+        const userId = req.params.userId
+        const { name, description, location, title, expertise, social, image } = req.body.formData
+
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            { name, description, location, title, expertise, social, image },
+            { new: true }
+        ).select("-password")
+        res.status(200).json({ success: true, message: "User Edited Successfully!", user: updatedUser })
+    } catch (error) {
+        console.error("User Edit Error! :", error)
+        res.status(500).json({ message: "Server Error! " })
     }
 }

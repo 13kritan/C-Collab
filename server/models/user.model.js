@@ -8,18 +8,44 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true, 
+        required: true,
         unique: true,
         lowercase: true
     },
     password: {
-        type: String, 
+        type: String,
         required: true,
         select: false
-    }
-}, 
-{
-    timestamps: true
-})
+    },
+    location:{
+        type: String,
+        default: "unset"
+    },
+    title:{
+        type: String,
+        default: "Developer"
+    },
+    description: {
+        type: String,
+        default: "C Coder"
+    },
+    social: {
+        github: {
+            type: String
+        },
+        linkedin: {
+            type: String
+        },
+    },
+    image: {
+        type: String
+    },
+    expertise: [{
+        type: String
+    }],
+},
+    {
+        timestamps: true
+    })
 
 module.exports = mongoose.model("User", userSchema)

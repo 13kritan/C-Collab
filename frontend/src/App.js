@@ -12,6 +12,7 @@ import Shared from './pages/Shared';
 import Activity from './pages/Activity';
 import CreateProject from './pages/CreateProject';
 import ProjectView from './pages/Project';
+import Profile from './pages/Profile';
 
 function App() {
   const contextClass = {
@@ -51,6 +52,8 @@ function App() {
                 <Route path="create" element={<CreateProject />} />
                 <Route path="project/:id" element={<ProjectView />} />
               </Route>
+
+              <Route path='/profile' element={<Profile />} />
             </Routes>
 
         </BrowserRouter>

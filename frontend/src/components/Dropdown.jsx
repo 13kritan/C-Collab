@@ -2,8 +2,10 @@ import React, { useContext, useEffect } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { UserMinus } from 'lucide-react'
 import useAuth from '../hooks/useAuth'
+import { useNavigate } from 'react-router-dom'
 
 const ProfileDropdown = ({ menuItems, dropdownRef, isOpen, setIsOpen, checkLoc }) => {
+    const navigate = useNavigate()
     const user = useContext(AuthContext)
     const { logout } = useAuth()
     // Close dropdown when clicking outside
@@ -42,6 +44,7 @@ const ProfileDropdown = ({ menuItems, dropdownRef, isOpen, setIsOpen, checkLoc }
                         {menuItems.map((item, index) => (
                             <button
                                 key={index}
+                                onClick={() => navigate(item.location)}
                                 className="w-full flex items-center justify-between px-4 py-2.5 text-xs font-mono text-slate-400 hover:text-accent-blue hover:bg-bg-main/10 transition-colors group"
                             >
                                 <div className="flex items-center gap-3">

@@ -54,7 +54,7 @@ export default function useAuth() {
             const res = await axios.post(`${API_URL}/auth/register`, { name, email, password }, authConfig)
 
             localStorage.setItem("token", res.data.token)
-            localStorage.setItem("user", JSON.stringify(res.data.user));
+            localStorage.setItem("user", JSON.stringify(res.data.user))
 
             setUser(res.data.user)
             navigate('/')
@@ -76,6 +76,29 @@ export default function useAuth() {
         navigate('/auth')
     }
 
+    // Edit Profile
+    const editProfile = async (formData, userId) => {
+        try {
+            setLoading(true)
+            setError(null)
+
+            const res = await axios.post(`${API_URL}/auth/editProfile/${userId}`, { formData, }, authConfig)
+
+            localStorage.setItem("user", JSON.stringify(res.data.user))
+
+            setUser(res.data.user)
+            window.location.reload()
+            navigate('/profile')
+
+            return res.data
+        } catch (err) {
+            setError(err.response?.data?.message || "Registration failed");
+            throw err
+        } finally {
+            setLoading(false)
+        }
+    }
+
     return {
         user,
         loading,
@@ -84,7 +107,9 @@ export default function useAuth() {
         login,
         register,
         logout,
+        editProfile
     }
+
 }
 
 

@@ -1,17 +1,19 @@
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Search, Plus } from 'lucide-react'
 import { User, Settings, Terminal, Shield } from 'lucide-react'
 import ProfileDropdown from './Dropdown';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 
 const Navbar = () => {
+  const user = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
 
   const checkLoc = true
   const menuItems = [
-    { label: 'Profile', icon: <User size={14} />, detail: '0xAF31...' },
+    { label: 'Profile', icon: <User size={14} />, location: '/profile' },
     { label: 'Settings', icon: <Settings size={14} /> },
     { label: 'API Keys', icon: <Terminal size={14} /> },
     { label: 'Security', icon: <Shield size={14} /> },
@@ -47,7 +49,7 @@ const Navbar = () => {
             ref={dropdownRef}
             className="h-8 w-8 rounded-full overflow-hidden border border-accent-blue shadow-[0_0_8px_rgba(59,130,246,0.5)] cursor-pointer">
             <img
-              src="/api/placeholder/32/32" // Replace with your avatar source
+              src={user?.user?.image}
               alt="User"
               className="h-full w-full object-cover"
             />
