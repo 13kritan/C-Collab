@@ -51,9 +51,9 @@ module.exports.getMyProjects = async (req, res) => {
 module.exports.getProjectById = async (req, res) => {
     try {
         const project = await Project.findById(req.params.id)
-            .populate("owner", "name email")
-            .populate("collaborators", "name email")
-            .populate("viewers", "name email")
+            .populate("owner", "name email image expertise social description title location createdAt")
+            .populate("collaborators", "name email image expertise social description title location createdAt")
+            .populate("viewers", "name email image expertise social description title location createdAt")
 
 
         if (!project)

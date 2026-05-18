@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 import { UserPlus, Shield, Trash2, Terminal, Eye, Code2, Copy, Check, Clock, ShieldAlert, Users, RefreshCw, X } from 'lucide-react'
 import { useInvite } from '../hooks/useInvite'
-import { useProject } from '../hooks/useProject';
-import { toast } from 'react-toastify';
+import { useProject } from '../hooks/useProject'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom'
 
 const MembersTab = ({ projectDetails }) => {
+    const navigate = useNavigate()
     const { deleteViewer, deleteCollaborator } = useProject()
     const [inviteTabOpen, setInviteTabOpen] = useState(false)
     const projectId = projectDetails._id
@@ -19,6 +21,8 @@ const MembersTab = ({ projectDetails }) => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     }
+
+    
 
     return (
         <>
@@ -44,14 +48,14 @@ const MembersTab = ({ projectDetails }) => {
                             {/* 1. OWNERS */}
                             <div className="mb-10">
                                 <SectionHeader title="Project Owners" icon={<Shield size={16} />} count={projectDetails?.owner?.length} color="text-blue-400" />
-                                <MemberRow key={projectDetails?.owner._id} projectDetails={projectDetails} member={projectDetails?.owner} isOwner />
+                                <MemberRow navigate={navigate} key={projectDetails?.owner._id} projectDetails={projectDetails} member={projectDetails?.owner} isOwner />
                             </div>
 
                             {/* 2. COLLABORATORS (Read/Write) */}
                             <div className="mb-10">
                                 <SectionHeader title="Collaborators" icon={<Code2 size={16} />} count={projectDetails?.collaborators.length} color="text-emerald-400" />
                                 {projectDetails?.collaborators.length > 0 ? (
-                                    projectDetails?.collaborators.map(c => <MemberRow key={c._id} deleteCollaborator={deleteCollaborator} projectDetails={projectDetails} member={c} />)
+                                    projectDetails?.collaborators.map(c => <MemberRow navigate={navigate} key={c._id} deleteCollaborator={deleteCollaborator} projectDetails={projectDetails} member={c} />)
                                 ) : (
                                     <p className="text-xs text-gray-600 pl-4">No active collaborators.</p>
                                 )}
@@ -61,7 +65,7 @@ const MembersTab = ({ projectDetails }) => {
                             <div className="mb-10">
                                 <SectionHeader title="Viewers" icon={<Eye size={16} />} count={projectDetails?.viewers.length} color="text-purple-400" />
                                 {projectDetails?.viewers.length > 0 ? (
-                                    projectDetails?.viewers.map(v => <MemberRow key={v.id} deleteViewer={deleteViewer} projectDetails={projectDetails} member={v} />)
+                                    projectDetails?.viewers.map(v => <MemberRow navigate={navigate} key={v.id} deleteViewer={deleteViewer} projectDetails={projectDetails} member={v} />)
                                 ) : (
                                     <p className="text-xs text-gray-600 pl-4">No read-only viewers.</p>
                                 )}
@@ -189,11 +193,25 @@ function getInitials(name = "") {
 }
 
 
-const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, deleteViewer }) => (
-    <div className="group flex items-center justify-between py-3 px-3 hover:bg-[#161b22] rounded-md transition-all border border-transparent hover:border-gray-800 mb-1">
+const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, deleteViewer, navigate }) => (
+    <div onClick={() => navigate(`/view-profile/${member._id}`, {
+        state: member
+    })}
+     className="group flex items-center justify-between py-3 px-3 hover:bg-[#161b22] rounded-md transition-all border border-transparent hover:border-gray-800 mb-1">
         <div className="flex items-center gap-4">
             <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs shadow-inner ${isOwner ? 'bg-blue-900/30 text-blue-400' : 'bg-gray-800 text-gray-400'}`}>
-                {getInitials(member?.name)}
+
+                {member?.image ? (
+                    <img
+                        src={member.image}
+                        alt={member.name}
+                        className="w-8 h-8 rounded-full"
+                    />
+                ) : (
+                    <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center text-xs">
+                        {getInitials(member?.name)}
+                    </div>
+                )}
             </div>
             <div>
                 <div className="text-sm text-gray-200 font-medium">{member?.name}</div>
@@ -223,8 +241,8 @@ const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, delete
                     if (isCollaborator) deleteCollaborator(projectId, member._id)
                     else if (isViewer) deleteViewer(projectId, member._id)
                     else if (isOwner) toast.error("Cant delete Owner")
-                    
-                    
+
+
                 } catch (error) {
                     console.log(error)
                 }

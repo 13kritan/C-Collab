@@ -99,7 +99,7 @@ const Profile = () => {
                                             <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
                                                 <h3 className="text-sm font-bold text-white mb-4 uppercase tracking-widest">Technical Expertise & C standards</h3>
                                                 <div className="flex flex-wrap gap-2">
-                                                    {user?.user?.expertise.map((tag) => (
+                                                    {user?.user?.expertise?.map((tag) => (
                                                         <span key={tag} className="px-3 py-1 bg-[#0d1117] border border-[#30363d] rounded text-[11px] text-gray-400 hover:text-blue-400 hover:border-blue-500/50 cursor-default transition-colors">
                                                             {tag}
                                                         </span>

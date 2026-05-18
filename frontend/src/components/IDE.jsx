@@ -54,7 +54,7 @@ export default function IDE({ docId, setDocClick, isViewer }) {
             setDoc(docData)
         }
         getDocDetail()
-    }, [docId, fetchDocumentById, loading])
+    }, [docId, fetchDocumentById])
 
     const fileName = doc?.name
 
@@ -99,7 +99,7 @@ export default function IDE({ docId, setDocClick, isViewer }) {
 
     return (
         <div className='w-full h-full bg-bg-primary p-2 flex flex-col'>
-            {/* Headers */}
+           
             <div className="relative header flex items-center justify-between ">
                 <div className='flex items-center py-2 '>
                     <button onClick={() => setDocClick(false)}

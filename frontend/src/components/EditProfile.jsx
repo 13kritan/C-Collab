@@ -11,14 +11,14 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
         location: user.user.location,
         image: user.user.image || Pfp,
         title: user.user.title,
-        expertise: user.user.expertise,
+        expertise: user.user.expertise || [],
         social: {
             github: user.user.social?.github,
             linkedin: user.user.social?.linkedin,
         },
     })
     const [image, setImage] = useState(null)
-
+    console.log(user)
 
     const handleImageChange = (e) => {
         const file = e.target.files[0]
@@ -46,7 +46,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
             e.preventDefault()
             const value = tagInput.trim()
 
-            if (value && !formData.expertise.includes(`[${value}]`)) {
+            if (value && !formData.expertise?.includes(`[${value}]`)) {
                 const formattedTag = value.startsWith('[') ? value : `[${value}]`
 
                 setFormData(prev => ({
@@ -63,7 +63,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
     const removeTag = (indexToRemove) => {
         setFormData(prev => ({
             ...prev,
-            expertise: prev.expertise.filter((_, index) => index !== indexToRemove)
+            expertise: prev?.expertise?.filter((_, index) => index !== indexToRemove)
         }))
     }
 
@@ -74,7 +74,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
             setFormData((prev) => ({
                 ...prev,
                 social: {
-                    ...prev.social,
+                    ...prev?.social,
                     [name]: value,
                 },
             }))
@@ -89,6 +89,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const userId = user.user._id
+        console.log(userId)
         try {
             await editProfile(formData, userId)
         } catch (err) {
@@ -182,7 +183,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                             <h3 className="text-sm font-bold text-white uppercase tracking-wider">3. Technical Expertise & C standards</h3>
                             <div className="w-full bg-[#0d1117] border border-[#30363d] rounded-md p-2 flex flex-wrap gap-2 min-h-[44px] focus-within:border-blue-500 transition-colors">
                                 {/* Render Existing Tags */}
-                                {formData.expertise.map((tag, index) => (
+                                {formData.expertise?.map((tag, index) => (
                                     <span
                                         key={index}
                                         className="flex items-center gap-1 bg-[#161b22] px-2 py-0.5 rounded border border-[#30363d] text-xs text-blue-400 font-mono"
@@ -202,7 +203,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                                     value={tagInput}
                                     onChange={(e) => setTagInput(e.target.value)}
                                     onKeyDown={handleKeyDown}
-                                    placeholder={formData.expertise.length === 0 ? "Add Tag (e.g., C++, CMake)" : formData.expertise}
+                                    placeholder={formData.expertise?.length === 0 ? "Add Tag (e.g., C++, CMake)" : formData.expertise}
                                     className="flex-1 bg-transparent border-none outline-none text-sm text-gray-300 min-w-[120px]"
                                 />
                             </div>

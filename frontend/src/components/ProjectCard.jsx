@@ -4,7 +4,7 @@ import { AuthContext } from "../context/AuthContext"
 
 export const ProjectCard = ({_id, name, description, owner, collabCount }) => {
     const user = useContext(AuthContext)
-    // Status color mapping
+    
     const statusStyles = {
         Stable: 'bg-green-500/20 text-green-400 border-green-500/50',
         Building: 'bg-amber-500/20 text-amber-400 border-amber-500/50',
