@@ -51,17 +51,17 @@ const Profile = () => {
                                             <div className="relative">
                                                 <img
                                                     src={user?.user?.image || Pfp}
-                                                    className="w-32 h-32 rounded-full border-4 border-[#161b22] shadow-[0_0_25px_rgba(37,99,235,0.4)] ring-2 ring-blue-600"
+                                                    className="w-32 h-32 tablet:w-28 tablet:h-28 rounded-full border-4 border-[#161b22] shadow-[0_0_25px_rgba(37,99,235,0.4)] ring-2 ring-blue-600"
                                                     alt="Alexander Volkov"
                                                 />
                                             </div>
                                             <div>
-                                                <h1 className="text-3xl font-bold text-white mb-1">{user?.user?.name}</h1>
+                                                <h1 className="text-3xl tablet:text-xl font-bold text-white mb-1">{user?.user?.name}</h1>
                                                 <p className="text-gray-400 text-sm">{user?.user?.title}</p>
                                             </div>
                                         </div>
                                         <button onClick={() => isEditOpen(true)}
-                                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-lg shadow-blue-900/20">
+                                            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 tablet:px-4 py-2 rounded-lg font-bold text-sm tablet:text-xs transition-all shadow-lg shadow-blue-900/20">
                                             Edit Profile
                                         </button>
                                     </div>

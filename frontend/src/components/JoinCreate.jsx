@@ -17,7 +17,7 @@ export default function JoinCreate({ setIsJoin }) {
         joinProject(code, userId)
     }
     return (
-        <div className='fixed top-0 left-0 w-full pl-64 h-full bg-bg-main/20 backdrop-blur-lg flex items-center justify-center'>
+        <div className='fixed top-0 left-0 w-full pl-64 tablet:pl-2 h-full bg-bg-main/20 backdrop-blur-lg flex items-center justify-center'>
             <div className="max-w-4xl mx-auto py-12 px-6 animate-in fade-in duration-700">
 
                 {/* 1. Minimalist Back Navigation */}

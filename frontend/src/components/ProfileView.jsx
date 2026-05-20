@@ -42,12 +42,12 @@ const ProfileView = () => {
                                     <div className="relative">
                                         <img
                                             src={member?.image || Pfp}
-                                            className="w-32 h-32 rounded-full border-4 border-[#161b22] shadow-[0_0_25px_rgba(37,99,235,0.4)] ring-2 ring-blue-600"
+                                            className="w-32 h-32 tablet:w-28 tablet:h-28 rounded-full border-4 border-[#161b22] shadow-[0_0_25px_rgba(37,99,235,0.4)] ring-2 ring-blue-600"
                                             alt="Alexander Volkov"
                                         />
                                     </div>
                                     <div>
-                                        <h1 className="text-3xl font-bold text-white mb-1">{member?.name}</h1>
+                                        <h1 className="text-3xl tablet:text-xl font-bold text-white mb-1">{member?.name}</h1>
                                         <p className="text-gray-400 text-sm">{member?.title}</p>
                                     </div>
                                 </div>

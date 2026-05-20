@@ -1,16 +1,15 @@
 import React, { useContext, useRef, useState } from 'react'
-import { Search, Plus } from 'lucide-react'
+import { Search, Plus, Menu } from 'lucide-react'
 import { User, Settings, Terminal, Shield } from 'lucide-react'
 import ProfileDropdown from './Dropdown';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
-const Navbar = () => {
+const Navbar = ({sidebarOpen, isSidebarOpen}) => {
   const user = useContext(AuthContext)
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef(null)
   const navigate = useNavigate()
-  console.log(user)
   const checkLoc = true
   const menuItems = [
     { label: 'Profile', icon: <User size={14} />, location: '/profile' },
@@ -19,7 +18,13 @@ const Navbar = () => {
     { label: 'Security', icon: <Shield size={14} /> },
   ]
   return (
-    <nav className="fixed z-20 top-0 left-0 pl-72 w-full h-16 border-b border-white/[0.05] bg-bg-subtle flex items-center justify-between px-8">
+    <nav className="fixed z-20 top-0 left-0 desktop:pl-72 tablet:pl-2 w-full h-16 border-b border-white/[0.05] bg-bg-subtle flex items-center justify-between px-8">
+
+      <button onClick={() => isSidebarOpen(true)}
+       className={`text-white ${sidebarOpen ? 'hidden' : ''} desktop:hidden`}>
+        <Menu size={20} />
+      </button>
+
       {/* Left Section: Search Bar */}
       <div className="flex flex-1 max-w-md">
         {/* <div className="relative w-full group">

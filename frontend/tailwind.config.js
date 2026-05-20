@@ -4,7 +4,8 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {colors: {
+    extend: {
+      colors: {
       'bg-primary': '#0B0E14',
       'bg-main': '#0d1117',      
       'bg-surface': '#161b22',   
@@ -15,7 +16,10 @@ module.exports = {
         glow: 'rgba(59, 130, 246, 0.4)', // For shadows/glows
       },
     },
-    // Simplified "Glass" border for that sharp developer feel
+    screens: {
+      tablet: {min: "768px", max: "1023px"},
+      desktop: { min: "1024px" },
+    },
     borderColor: {
       'glass': 'rgba(255, 255, 255, 0.08)',
     },

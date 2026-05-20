@@ -3,7 +3,7 @@ import { Terminal, ChevronRight, ChevronLeft, Activity } from 'lucide-react';
 import { useProject } from '../hooks/useProject'
 
 const AuditSidebar = ({ projectId }) => {
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
     const [auditLog, setAuditLog] = useState([]);
     const {fetchAuditLogs} = useProject()
     

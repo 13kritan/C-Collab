@@ -1,28 +1,32 @@
 import React, { useState } from 'react'
-import { LayoutGrid, Box, Share2, Activity } from 'lucide-react'
+import { LayoutGrid, Box, Share2, Activity, X } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-const Sidebar = () => {
+const Sidebar = ({ sidebarOpen, isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState('Projects')
   const navigate = useNavigate()
 
   const menuItems = [
     { name: 'Projects', icon: <LayoutGrid size={18} />, path: 'home' },
-    { name: 'Recent', icon: <Box size={18} />, path: 'recent' },
+    // { name: 'Recent', icon: <Box size={18} />, path: 'recent' },
     { name: 'Shared', icon: <Share2 size={18} />, path: 'shared' },
-    { name: 'Activity', icon: <Activity size={18} />, path: 'activity' },
+    // { name: 'Activity', icon: <Activity size={18} />, path: 'activity' },
   ]
 
   return (
-    <div className="fixed z-30 top-0 left-0 w-64 h-screen bg-bg-main border-r border-white/[0.05] flex flex-col py-6 ">
+    <div className={`${sidebarOpen ? '' : 'hidden'} transition-all ease-in-out duration-700 fixed z-30 top-0 left-0 w-64 tablet:w-48 h-screen bg-bg-main border-r border-white/[0.05] flex flex-col py-6 `}>
       {/* Brand / Logo Section */}
-      <div className="px-8 mb-10 flex items-center w-full gap-1">
-        <div className="text-accent-blue text-3xl font-bold tracking-tighter flex items-center">
+      <div className="px-8 tablet:px-2 mb-10 flex items-center w-full gap-1 tablet:justify-between">
+        <div className="text-accent-blue text-3xl tablet:text-xl font-bold tracking-tighter flex items-center">
           <span className="opacity-50">[</span>
           <span className="px-0.5">C</span>
           <span className="opacity-50">]</span>
+          <h1 className='font-mono font-bold text-2xl tablet:text-lg tracking-tighter text-slate-200'>- Collab</h1>
         </div>
-        <h1 className='font-mono font-bold text-2xl tracking-tighter text-slate-200'>- Collab</h1>
+        <button onClick={() => isSidebarOpen(false)}
+          className={`text-white ${sidebarOpen ? '' : 'hidden'} desktop:hidden`}>
+          <X size={20} />
+        </button>
       </div>
 
       {/* Navigation Links */}
@@ -32,6 +36,7 @@ const Sidebar = () => {
             key={item.name}
             onClick={() => {
               setActiveTab(item.name)
+              isSidebarOpen(true)
               navigate(`/${item.path}`)
             }}
             className={`

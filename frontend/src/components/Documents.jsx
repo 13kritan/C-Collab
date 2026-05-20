@@ -91,8 +91,8 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
         <>
             <main className={`flex-1 flex flex-col ${docClick ? 'gap-3 h-full' : 'flex-1'}`}>
                 {/* Toolbar */}
-                <header className={`border-b border-white/[0.05] ${docClick ? 'flex-col gap-3 py-3' : 'items-center h-14'} flex  justify-between px-6 bg-workspace-dark`}>
-                    <div className="flex items-center gap-4">
+                <header className={`border-b border-white/[0.05] ${docClick ? 'flex-col gap-3 py-3' : 'items-center h-14'} flex  justify-between px-6 tablet:px-2 bg-workspace-dark`}>
+                    <div className="flex items-center">
                         <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
                             <HardDrive size={14} />
                             <span>root</span>
@@ -101,7 +101,6 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                         </div>
                     </div>
 
-                    
                 </header>
 
                 {/* Folder List Grid */}
@@ -130,7 +129,7 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                         {documents?.map((file) => (
                             <div
                                 key={file._id}
-                                className="relative group flex items-center justify-between px-6 bg-workspace-dark hover:bg-accent-blue/[0.03] transition-colors cursor-pointer"
+                                className="relative group flex items-center justify-between px-6 tablet:px-2 bg-workspace-dark hover:bg-accent-blue/[0.03] transition-colors cursor-pointer"
                             >
                                 <div onClick={()=>handleDocClick(file._id)}
                                 className="flex h-full py-3 items-center gap-4 flex-1 mr-4 text-slate-300 hover:text-accent-blue">
@@ -192,7 +191,7 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                         <div className="p-4 rounded-full bg-white/[0.02] border border-white/[0.05] group-hover:border-accent-blue/30 transition-all">
                             <Plus size={12} className="text-slate-600 group-hover:text-accent-blue" />
                         </div>
-                        <p className="text-xs font-mono text-slate-500 group-hover:text-slate-400 uppercase tracking-widest">Deploy new document</p>
+                        <p className="text-xs font-mono text-center text-slate-500 group-hover:text-slate-400 uppercase tracking-widest">Deploy new document</p>
                     </div>
 
                 </div>
