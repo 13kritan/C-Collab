@@ -4,19 +4,21 @@ import { useDocument } from '../hooks/useDocument'
 import { InlineCloader } from '../utils/PageLoader'
 
 export default function Documents({ projectDetails, docClick, handleDocClick }) {
-    const { documents, fetchDocumentsByProject, createDocument, deleteDocument, loading, error } = useDocument()
+    const { documents, fetchDocumentsByProject, createDocument, deleteDocument, loading, error, updateDocument } = useDocument()
     const inputRef = useRef(null)
     const [newDocClick, setNewDocClick] = useState(false)
     const [data, setData] = useState({
         name: '',
         content: ''
     })
+    const [renamingId, setRenamingId] = useState(null)
+    const [renameValue, setRenameValue] = useState("")
 
     // Auto Fetch Documents
     useEffect(() => {
         if (!projectDetails?._id) return
         fetchDocumentsByProject(projectDetails._id)
-    }, [projectDetails?._id, fetchDocumentsByProject])
+    }, [projectDetails?._id, fetchDocumentsByProject, documents])
 
 
     // On Change Function
@@ -75,17 +77,17 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
     // Close dropdown when clicking outside
     useEffect(() => {
         const handleClickOutside = (event) => {
-          if (!openDocId) return
-      
-          const dropdownEl = dropdownRef.current[openDocId]
-          if (dropdownEl && !dropdownEl.contains(event.target)) {
-            setOpenDocId(null)
-          }
+            if (!openDocId) return
+
+            const dropdownEl = dropdownRef.current[openDocId]
+            if (dropdownEl && !dropdownEl.contains(event.target)) {
+                setOpenDocId(null)
+            }
         }
-      
+
         document.addEventListener("mousedown", handleClickOutside)
         return () => document.removeEventListener("mousedown", handleClickOutside)
-      }, [openDocId])
+    }, [openDocId])
 
     return (
         <>
@@ -131,12 +133,34 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                                 key={file._id}
                                 className="relative group flex items-center justify-between px-6 tablet:px-2 bg-workspace-dark hover:bg-accent-blue/[0.03] transition-colors cursor-pointer"
                             >
-                                <div onClick={()=>handleDocClick(file._id)}
-                                className="flex h-full py-3 items-center gap-4 flex-1 mr-4 text-slate-300 hover:text-accent-blue">
+                                <div onClick={() => handleDocClick(file._id)}
+                                    className="flex h-full py-3 items-center gap-4 flex-1 mr-4 text-slate-300 hover:text-accent-blue">
                                     <FileText size={18} className="text-blue-400/60" />
-                                    <span className="text-sm font-mono tracking-tight ">
-                                        {file.name}
-                                    </span>
+                                    {renamingId === file._id ? (
+                                        <input
+                                            value={renameValue}
+                                            autoFocus
+                                            onChange={(e) => setRenameValue(e.target.value)}
+                                            onBlur={async () => {
+                                                if (!renameValue.trim()) return
+
+                                                await updateDocument(file._id, { name: renameValue })
+                                                setRenamingId(null)
+                                            }}
+                                            onKeyDown={async (e) => {
+                                                if (e.key === "Enter") {
+                                                    await updateDocument(file._id, { name: renameValue })
+                                                    setRenamingId(null)
+                                                }
+                                                if (e.key === "Escape") {
+                                                    setRenamingId(null)
+                                                }
+                                            }}
+                                            className="bg-transparent border border-white/10 px-2 py-1 text-sm"
+                                        />
+                                    ) : (
+                                        <span className="text-sm font-mono">{file.name}</span>
+                                    )}
                                 </div>
 
                                 <div className="relative  flex items-center gap-8 font-mono text-[10px] text-slate-600">
@@ -153,15 +177,23 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                                     </button>
 
                                     {openDocId === file._id && (
-                                        <div  ref={(el) => (dropdownRef.current[file._id] = el)}
+                                        <div ref={(el) => (dropdownRef.current[file._id] = el)}
                                             onClick={(e) => e.stopPropagation()}
                                             className="doc-dropdown absolute right-0 top-4 w-56 origin-top-right bg-bg-primary border border-white/10 rounded-xl rounded-tr-none shadow-2xl z-50  animate-in fade-in zoom-in-95 duration-100"
                                         >
                                             {/* Update */}
                                             <div className="py-1">
-                                                <button className="w-full flex items-center gap-3 px-4 py-2 text-xs font-mono text-slate-400 hover:text-accent-blue hover:bg-bg-main/10">
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation()
+                                                        setRenamingId(file._id)
+                                                        setRenameValue(file.name)
+                                                        setOpenDocId(null)
+                                                    }}
+                                                    className="w-full flex items-center gap-3 px-4 py-2 text-xs font-mono text-slate-400 hover:text-accent-blue hover:bg-bg-main/10"
+                                                >
                                                     <FileText size={14} />
-                                                    Update
+                                                    Rename
                                                 </button>
                                             </div>
 
