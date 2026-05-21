@@ -1,7 +1,8 @@
 import { useState } from "react"
 import axios from "axios"
 import { authConfig } from "../utils/authConfig"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import { toast } from 'react-toastify'
 
 const API_URL = "http://localhost:5000/api"
 
@@ -29,11 +30,13 @@ export default function useAuth() {
             localStorage.setItem("token", res.data.token)
             localStorage.setItem("user", JSON.stringify(res.data.user));
             setUser(res.data.user)
+            toast.success("Logged In")
             navigate('/')
             return res.data
+
         } catch (err) {
             setError(err.response?.data?.message || "Login failed")
-            throw err
+            toast.error("Login Failed")
         } finally {
             setLoading(false)
         }
@@ -55,13 +58,14 @@ export default function useAuth() {
 
             localStorage.setItem("token", res.data.token)
             localStorage.setItem("user", JSON.stringify(res.data.user))
-
+            toast.success("Registered User")
             setUser(res.data.user)
             navigate('/')
 
             return res.data
         } catch (err) {
-            setError(err.response?.data?.message || "Registration failed");
+            setError(err.response?.data?.message || "Registration failed")
+            toast.error("Error Registering User.")
             throw err
         } finally {
             setLoading(false)
@@ -73,6 +77,7 @@ export default function useAuth() {
         localStorage.removeItem("token")
         localStorage.removeItem("user")
         setUser(null)
+        toast.success("Logged Out.")
         navigate('/auth')
     }
 
@@ -88,11 +93,13 @@ export default function useAuth() {
 
             setUser(res.data.user)
             window.location.reload()
+            toast.success("User Edited.")
             navigate('/profile')
 
             return res.data
         } catch (err) {
-            setError(err.response?.data?.message || "Registration failed");
+            setError(err.response?.data?.message || "Registration failed")
+            toast.error("Update Failed.")
             throw err
         } finally {
             setLoading(false)

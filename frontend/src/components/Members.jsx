@@ -21,7 +21,7 @@ const MembersTab = ({ projectDetails }) => {
         setTimeout(() => setCopied(false), 2000)
     }
 
-    
+
 
     return (
         <>
@@ -193,11 +193,12 @@ function getInitials(name = "") {
 
 
 const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, deleteViewer, navigate }) => (
-    <div onClick={() => navigate(`/view-profile/${member._id}`, {
-        state: member
-    })}
-     className="group flex items-center justify-between py-3 px-3 hover:bg-[#161b22] rounded-md transition-all border border-transparent hover:border-gray-800 mb-1">
-        <div className="flex items-center gap-4">
+    <div
+        className="group flex items-center justify-between py-3 px-3 hover:bg-[#161b22] rounded-md transition-all border border-transparent hover:border-gray-800 mb-1">
+        <div onClick={() => navigate(`/view-profile/${member._id}`, {
+            state: member
+        })}
+            className="flex items-center gap-4">
             <div className={`w-9 h-9 rounded-full flex items-center justify-center font-bold text-xs shadow-inner ${isOwner ? 'bg-blue-900/30 text-blue-400' : 'bg-gray-800 text-gray-400'}`}>
 
                 {member?.image ? (

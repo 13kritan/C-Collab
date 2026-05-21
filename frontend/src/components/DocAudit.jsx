@@ -10,7 +10,7 @@ const DocAudit = ({docId}) => {
   
   const { auditLog } = useDocumentAudit({
     documentId: docId,
-    currentUserId: user?.user.id
+    currentUserId: user?.user._id
   })
 
   const latest = auditLog[auditLog.length - 1]
