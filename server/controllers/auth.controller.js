@@ -32,7 +32,6 @@ module.exports.registerUser = async (req, res) => {
 module.exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body
-        console.log(email, password)
         if (!email || !password)
             return res.status(400).json({ message: "All fields are required!" })
 
@@ -79,5 +78,28 @@ module.exports.editUser = async (req, res) => {
     } catch (error) {
         console.error("User Edit Error! :", error)
         res.status(500).json({ message: "Server Error! " })
+    }
+}
+
+// FETCH USER
+module.exports.fetchUser = async (req, res) => {
+    try {
+        const email = req.params.email
+        console.log(email)
+        const user = await User.findOne({
+            email: req.params.email,
+        }).select("-password")
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+            })
+        }
+
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json({
+            message: "Server Error",
+        })
     }
 }

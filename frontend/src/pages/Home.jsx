@@ -18,7 +18,7 @@ function Home() {
             {/* Home Heading */}
             <div className="space-y-2">
                 <h2 className='text-3xl font-bold font-mono'>My Workspace</h2>
-                <p className='text-slate-400 font-mono'>Welcome Back, {user?.user?.name}. You have 3 projects and 10 collaborative sessions.</p>
+                <p className='text-slate-400 font-mono'>Welcome Back, {user?.user?.name}. </p>
             </div>
 
             {/* Project Grid Layout */}
