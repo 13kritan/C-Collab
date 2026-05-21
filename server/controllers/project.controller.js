@@ -12,7 +12,7 @@ module.exports.createProject = async (req, res) => {
             owner: req.userId
         })
 
-        // 🧾 AUDIT LOG
+        //   AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Project Created: " + name,
@@ -98,7 +98,7 @@ module.exports.updateProject = async (req, res) => {
 
         await project.save()
 
-        // 🧾 AUDIT LOG
+        //   AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Project Updated: " + req.body.name || project.name,
@@ -126,7 +126,7 @@ module.exports.deleteProject = async (req, res) => {
 
         await project.deleteOne()
 
-        // 🧾 AUDIT LOG
+        // AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Project Deleted: " + project.name,
@@ -157,7 +157,7 @@ module.exports.addCollaborator = async (req, res) => {
 
         await project.save()
 
-        // 🧾 AUDIT LOG
+        // AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Collaborator Added",
@@ -207,7 +207,7 @@ module.exports.deleteCollaborator = async (req, res) => {
 
         await project.save()
 
-        // 🧾 AUDIT LOG
+        //   AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Collaborator Removed",
@@ -242,7 +242,7 @@ exports.addViewer = async (req, res) => {
 
         await project.save()
 
-        // 🧾 AUDIT LOG
+        //   AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Viewer Added",
@@ -293,7 +293,7 @@ exports.deleteViewer = async (req, res) => {
 
         await project.save()
 
-        // 🧾 AUDIT LOG
+        // AUDIT LOG
         await AuditLog.create({
             project: project._id,
             action: "Viewer Deleted",

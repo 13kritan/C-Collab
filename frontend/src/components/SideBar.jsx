@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 const Sidebar = ({ sidebarOpen, isSidebarOpen }) => {
   const [activeTab, setActiveTab] = useState('Projects')
   const navigate = useNavigate()
+  if (window.innerWidth > 1023) isSidebarOpen(true)
 
   const menuItems = [
     { name: 'Projects', icon: <LayoutGrid size={18} />, path: 'home' },
@@ -15,7 +16,7 @@ const Sidebar = ({ sidebarOpen, isSidebarOpen }) => {
 
   return (
     <div className={`${sidebarOpen ? '' : 'hidden'} transition-all ease-in-out duration-700 fixed z-30 top-0 left-0 w-64 tablet:w-48 h-screen bg-bg-main border-r border-white/[0.05] flex flex-col py-6 `}>
-      {/* Brand / Logo Section */}
+      {/* Logo Section */}
       <div className="px-8 tablet:px-2 mb-10 flex items-center w-full gap-1 tablet:justify-between">
         <div className="text-accent-blue text-3xl tablet:text-xl font-bold tracking-tighter flex items-center">
           <span className="opacity-50">[</span>

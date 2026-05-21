@@ -1,9 +1,9 @@
 import React, { useContext, useRef, useState } from 'react'
 import { Search, Plus, Menu } from 'lucide-react'
 import { User, Settings, Terminal, Shield } from 'lucide-react'
-import ProfileDropdown from './Dropdown';
-import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import ProfileDropdown from './Dropdown'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 const Navbar = ({sidebarOpen, isSidebarOpen}) => {
   const user = useContext(AuthContext)
@@ -14,8 +14,6 @@ const Navbar = ({sidebarOpen, isSidebarOpen}) => {
   const menuItems = [
     { label: 'Profile', icon: <User size={14} />, location: '/profile' },
     { label: 'Settings', icon: <Settings size={14} /> },
-    { label: 'API Keys', icon: <Terminal size={14} /> },
-    { label: 'Security', icon: <Shield size={14} /> },
   ]
   return (
     <nav className="fixed z-20 top-0 left-0 desktop:pl-72 tablet:pl-2 w-full h-16 border-b border-white/[0.05] bg-bg-subtle flex items-center justify-between px-8">
@@ -65,7 +63,7 @@ const Navbar = ({sidebarOpen, isSidebarOpen}) => {
         </div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

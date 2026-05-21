@@ -21,7 +21,7 @@ export const ProjectCard = ({_id, name, description, owner, collabCount }) => {
     return (
         <div onClick={handleProjectClick}
          className="relative group bg-workspace-card border border-white/[0.05] rounded-xl p-6 hover:bg-workspace-hover hover:border-accent-blue/30 hover:text-accent-blue transition-all duration-300 group">
-            {/* Top Border Segment */}
+            {/* Top Border */}
             <div className="absolute -top-[1px] left-1/4 right-1/4 h-[1px] bg-accent-blue shadow-[0_0_8px_#3b82f6]" />
 
             {/* Card Header */}
@@ -54,7 +54,7 @@ export const ProjectCard = ({_id, name, description, owner, collabCount }) => {
                 </div>
             </div>
 
-            {/* Bottom Border Segment */}
+            {/* Bottom Border */}
             <div className="absolute -bottom-[1px] left-1/3 right-1/3 h-[1px] bg-accent-blue/50" />
         </div>
     )

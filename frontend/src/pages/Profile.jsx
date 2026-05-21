@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Github, Linkedin, ExternalLink, Bell, Edit3, MapPin, Mail, Calendar, ChevronLeft } from 'lucide-react'
+import { Github, Linkedin, MapPin, Mail, Calendar, ChevronLeft } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import EditProfile from '../components/EditProfile'
@@ -13,7 +13,7 @@ const Profile = () => {
         <>
             {user &&
                 <div className="min-h-screen bg-[#010409] text-[#c9d1d9] p-8 font-mono">
-                    {/* Container with subtle glow/glass effect */}
+                   
                     <div className="max-w-5xl mx-auto bg-[#0d1117] border border-[#30363d] rounded-xl shadow-2xl overflow-hidden">
 
                         {/* Top Navigation Bar */}
@@ -66,7 +66,7 @@ const Profile = () => {
                                         </button>
                                     </div>
 
-                                    {/* Quick Info Bar */}
+                                    {/* Info Bar */}
                                     <div className="grid grid-cols-3 gap-4 p-4 bg-[#161b22] border border-[#30363d] rounded-xl text-[11px]">
                                         <div className="flex items-center gap-2">
                                             <Mail size={14} className="text-gray-500" />
@@ -90,10 +90,10 @@ const Profile = () => {
                                         </div>
                                     </div>
 
-                                    {/* Grid Layout for Details */}
+                                    {/* Grid Layout */}
                                     <div className="grid grid-cols-12 gap-6">
 
-                                        {/* Left Column: Expertise & Social */}
+                                        {/* Expertise & Social */}
                                         <div className="col-span-8 space-y-6">
                                             {/* Expertise Section */}
                                             <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
@@ -121,7 +121,7 @@ const Profile = () => {
                                             </div>
                                         </div>
 
-                                        {/* Right Column: Graph & Links */}
+                                        {/* About */}
                                         <div className="col-span-4 space-y-6">
                                             <div className="space-y-3 text-[12px]">
                                                 <div className="flex justify-between">
@@ -148,7 +148,7 @@ const Profile = () => {
                 </div>
             }
         </>
-    );
+    ) 
 }
 
-export default Profile;
+export default Profile 

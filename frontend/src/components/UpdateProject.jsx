@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Save, Trash2, Info, Terminal } from 'lucide-react';
-import { useProject } from '../hooks/useProject';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react'
+import { Save, Trash2, Info, Terminal } from 'lucide-react'
+import { useProject } from '../hooks/useProject'
+import { useNavigate } from 'react-router-dom'
 
 const ProjectUpdateForm = ({ projectDetails }) => {
-    const { updateProject, deleteProject, loading } = useProject()
+    const { updateProject, deleteProject,  } = useProject()
     const [deleteClick, setDeleteClick] = useState(false)
     const [data, setData] = useState({
         name: '',
@@ -38,7 +38,7 @@ const ProjectUpdateForm = ({ projectDetails }) => {
     return (
         <div className="max-w-4xl mx-auto py-10 px-6 animate-in fade-in duration-500">
 
-            {/* Header with Breadcrumb-style Status */}
+            {/* Header */}
             <div className="flex justify-between items-end mb-12 pb-6 border-b border-white/[0.05]">
                 <div>
                     <div className="flex items-center gap-2 mb-2 text-[10px] font-mono text-slate-500 uppercase tracking-widest">
@@ -88,7 +88,7 @@ const ProjectUpdateForm = ({ projectDetails }) => {
                     </div>
                 </section>
 
-                {/* Resources / Status Flags */}
+                {/* Status */}
                 <section className="p-6 bg-white/[0.02] border border-white/[0.05] rounded-xl flex items-start gap-4">
                     <div className="p-2 bg-accent-blue/10 rounded-lg text-accent-blue">
                         <Info size={20} />
@@ -101,7 +101,7 @@ const ProjectUpdateForm = ({ projectDetails }) => {
                     </div>
                 </section>
 
-                {/* Danger Zone */}
+                {/* Delete */}
                 <section className="pt-10 border-t border-red-500/10">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div className="md:col-span-1">
@@ -140,7 +140,7 @@ const ProjectUpdateForm = ({ projectDetails }) => {
 
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default ProjectUpdateForm;
+export default ProjectUpdateForm

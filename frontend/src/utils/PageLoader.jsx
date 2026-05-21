@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+import { motion } from 'framer-motion' 
 
 export const PageLoader = () => {
   return (
@@ -43,24 +43,22 @@ export const InlineCloader = () => {
       <span className="animate-[pulse_1.5s_infinite]">C</span>
       <span>]</span>
     </div>
-  );
-};
+  ) 
+} 
 
 export const CardSkeleton = () => {
   return (
     <div className="">
       <div className="relative h-48 overflow-hidden rounded-xl border border-slate-800 bg-[#161b22] p-6">
         
-        {/* The Shimmer Effect: Moves slowly across the background */}
+        {/* Shimmer Effect */}
         <div className="absolute inset-0 -translate-x-full animate-[shimmer_3s_infinite] bg-gradient-to-r from-transparent via-white/[0.03] to-transparent" />
 
         <div className="flex items-center space-x-3">
-          {/* Static gray blocks with very low opacity */}
           <div className="h-6 w-6 rounded bg-slate-800/50" />
           <div className="h-6 w-32 rounded bg-slate-800/50" />
         </div>
         
-        {/* Added secondary lines to match card layout */}
         <div className="mt-8 space-y-3">
           <div className="h-2 w-20 rounded bg-slate-800/40" />
           <div className="h-2 w-24 rounded bg-slate-800/40" />

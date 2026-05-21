@@ -20,14 +20,14 @@ export default function JoinCreate({ setIsJoin }) {
         <div className='fixed top-0 left-0 w-full pl-64 tablet:pl-2 h-full bg-bg-main/20 backdrop-blur-lg flex items-center justify-center'>
             <div className="max-w-4xl mx-auto py-12 px-6 animate-in fade-in duration-700">
 
-                {/* 1. Minimalist Back Navigation */}
+                {/* Back Navigation */}
                 <button onClick={() => setIsJoin(false)}
                     className="flex items-center gap-2 text-slate-400 hover:text-accent-blue transition-all mb-12 group font-mono text-[10px] uppercase tracking-[0.4em]">
                     <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                     Root / Workspaces
                 </button>
 
-                {/* 2. Mode Selection Grid */}
+                {/* Mode Selection  */}
                 {
                     !collab ? 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -35,7 +35,7 @@ export default function JoinCreate({ setIsJoin }) {
                             {/* Create Project Card */}
                             <button onClick={() => navigate('/create')}
                                 className="relative group flex flex-col items-start p-8 bg-workspace-card border border-white/[0.05] rounded-2xl transition-all hover:bg-white/[0.02] overflow-hidden text-left">
-                                {/* Top Segmented Accent */}
+                                {/* Top Accent Line */}
                                 <div className="absolute -top-[1px] left-8 right-8 h-[1px] bg-accent-blue shadow-[0_0_15px_#3b82f6] scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
 
                                 <div className="mb-6 p-3 bg-accent-blue/10 rounded-lg text-accent-blue group-hover:scale-110 transition-transform">
@@ -71,7 +71,7 @@ export default function JoinCreate({ setIsJoin }) {
                                     Access Project _
                                 </span>
 
-                                {/* Bottom Segmented Accent (Subtle) */}
+                                {/* Bottom Accent Line */}
                                 <div className="absolute -bottom-[1px] left-12 right-12 h-[1px] bg-white/10 group-hover:bg-white/30 transition-colors" />
                             </button>
                         </div> :
@@ -103,7 +103,7 @@ export default function JoinCreate({ setIsJoin }) {
                 </div>
                 }
 
-                {/* 3. System Footer */}
+                {/* Footer */}
                 <div className="mt-12 flex items-center justify-center gap-4 text-slate-800">
                     <div className="h-[1px] w-12 bg-current" />
                     <Terminal size={14} />

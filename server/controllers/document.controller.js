@@ -30,7 +30,7 @@ module.exports.createDocument = async (req, res) => {
             createdBy: req.userId
         })
 
-        // 🧾 AUDIT LOG
+        //  AUDIT LOG
         await AuditLog.create({
             project: project._id,
             document: doc._id,
@@ -124,7 +124,7 @@ module.exports.updateDocument = async (req, res) => {
 
         await doc.save()
 
-        // 🧾 AUDIT LOG
+        //   AUDIT LOG
         await AuditLog.create({
             project: project._id,
             document: doc._id,
@@ -157,7 +157,7 @@ module.exports.deleteDocument = async (req, res) => {
 
         await doc.deleteOne()
 
-        // 🧾 AUDIT LOG
+        // AUDIT LOG
         await AuditLog.create({
             project: project._id,
             document: doc._id,

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { MoreVertical, FileText, ChevronRight, HardDrive, Search, ExternalLink, Plus, Trash2 } from 'lucide-react'
+import { MoreVertical, FileText, ChevronRight, HardDrive, Plus, Trash2 } from 'lucide-react'
 import { useDocument } from '../hooks/useDocument'
 import { InlineCloader } from '../utils/PageLoader'
 
@@ -217,7 +217,7 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                             </div>
                         ))}
                     </div>
-                    {/* Empty State / Dropzone Suggestion */}
+                    {/* Add Document */}
                     <div onClick={() => setNewDocClick(true)}
                         className={` border-2 border-dashed border-white/[0.03] rounded-xl flex flex-col items-center justify-center gap-3 grayscale hover:grayscale-0 transition-all cursor-pointer group ${docClick ? 'p-2' : 'p-4'}`}>
                         <div className="p-4 rounded-full bg-white/[0.02] border border-white/[0.05] group-hover:border-accent-blue/30 transition-all">

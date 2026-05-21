@@ -8,17 +8,20 @@ import { AuthContext } from "../context/AuthContext"
 const LandingLayout = () => {
     const user = useContext(AuthContext)
     const [viewportWidth, setViewportWidth] = useState(0)
+    const [sidebarOpen, isSidebarOpen] = useState(false)
 
     useEffect(() => {
         const checkDimensions = () => {
             setViewportWidth(window.innerWidth)
         }
         checkDimensions()
+        
         window.addEventListener('resize', checkDimensions)
         return () => window.removeEventListener('resize', checkDimensions)
+        
     }, [])
 
-    const [sidebarOpen, isSidebarOpen] = useState(true)
+    
     if (!user)
         return <Navigate to="/auth" replace />
 
@@ -26,9 +29,9 @@ const LandingLayout = () => {
 
     return (
         <>
-            { viewportWidth <767 ?
-            <ResponsiveBreak viewportWidth={viewportWidth} />
-            :
+            {viewportWidth < 767 ?
+                <ResponsiveBreak viewportWidth={viewportWidth} />
+                :
                 <div className="min-h-screen relative w-full">
                     <Navbar sidebarOpen={sidebarOpen} isSidebarOpen={isSidebarOpen} />
                     <div className="flex relative h-full">
@@ -43,4 +46,4 @@ const LandingLayout = () => {
     )
 }
 
-export default LandingLayout;
+export default LandingLayout 

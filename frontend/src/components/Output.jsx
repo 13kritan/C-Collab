@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 export default function Output({ running, output, sendInput, awaitingInput }) {
-    const [inputValue, setInputValue] = useState("");
+    const [inputValue, setInputValue] = useState("")
 
     const handleSend = () => {
-        if (!inputValue.trim()) return;
-        sendInput(inputValue);
-        setInputValue("");
-    };
+        if (!inputValue.trim()) return
+        sendInput(inputValue)
+        setInputValue("")
+    }
 
     return (
         <div className='flex flex-col h-full font-mono bg-[#050505] border border-white/[0.05] rounded-lg overflow-hidden'>
@@ -45,5 +45,5 @@ export default function Output({ running, output, sendInput, awaitingInput }) {
                 )}
             </div>
         </div>
-    );
+    )
 }

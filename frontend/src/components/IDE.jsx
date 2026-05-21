@@ -1,4 +1,4 @@
-import { Check, ChevronLeft, ChevronRight, Code2, Loader2, Play, Save, Terminal } from 'lucide-react'
+import { Check, ChevronLeft, Code2, Loader2, Play, Save, Terminal } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useDocument } from '../hooks/useDocument'
 import Editor from '@monaco-editor/react'
@@ -16,7 +16,7 @@ export default function IDE({ docId, setDocClick, isViewer }) {
     const [isEditor, setIsEditor] = useState(true)
     const [code, setCode] = useState(doc?.content)
 
-    // Handle change: 'value' is the full string content
+    // Handle change
     const handleEditorChange = (value) => {
         setCode(value)
     }

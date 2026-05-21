@@ -27,7 +27,6 @@ const ProjectView = () => {
 
     // On Document Click
     const handleDocClick = (docId) => {
-        console.log("DocId: " + docId)
         setCurrentDocId(docId)
         setDocClick(true)
     }
@@ -88,7 +87,7 @@ const ProjectView = () => {
     return (
         <div className="flex h-full bg-workspace-dark text-slate-300 animate-in fade-in duration-500">
 
-            {/* 1. Project Sub-Sidebar (Options) */}
+            {/* Documents */}
             <aside className="w-60 border-r border-white/[0.05] bg-workspace-card/30 flex flex-col">
 
                 {
@@ -100,8 +99,8 @@ const ProjectView = () => {
 
                         <nav className="flex-1 p-4 space-y-2">
                             {navItems.map((item) => {
-                                const Icon = item.icon;
-                                const isActive = activeTab === item.key;
+                                const Icon = item.icon 
+                                const isActive = activeTab === item.key 
 
                                 return (
                                     <button
@@ -116,7 +115,7 @@ const ProjectView = () => {
                                         <Icon size={16} />
                                         {item.label}
                                     </button>
-                                );
+                                ) 
                             })}
                         </nav>
 
@@ -130,7 +129,7 @@ const ProjectView = () => {
 
             </aside>
 
-            {/* 2. Main Content Area (Documents) */}
+            {/* IDE */}
 
             {
                 !docClick ?
@@ -139,7 +138,7 @@ const ProjectView = () => {
             }
 
         </div>
-    );
-};
+    ) 
+} 
 
 export default ProjectView

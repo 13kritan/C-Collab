@@ -1,17 +1,15 @@
 const Invite = require('../models/invite.model')
 const Project = require('../models/project.model')
 
-// GENERATE A DYNAMIC CODE
 module.exports.inviteUser = async (req, res) => {
     try {
         const { projectId } = req.params
         const { role } = req.body // Must be "collaborators" or "viewers" 
-        console.log(projectId, role)
 
-        // 1. Generate a clean 6-digit alphanumeric code
+        // Generate a clean 6-digit alphanumeric code
         const code = Math.random().toString(36).substring(2, 8).toUpperCase()
 
-        // 2. Create invite with 10-minute TTL (handled by Invite Schema)
+        // Create invite with 10-minute TTL
         const invite = await Invite.create({
             projectId,
             code,
@@ -32,9 +30,8 @@ module.exports.inviteUser = async (req, res) => {
 module.exports.joinProject = async (req, res) => {
     try {
         const { code, userId } = req.body
-        // 1. Check if invite exists and hasn't expired
+        
         const invite = await Invite.findOne({ code: code })
-        console.log(invite)
         if (!invite) {
             return res.status(404).json({ error: "Code invalid or expired." })
         }
@@ -49,7 +46,7 @@ module.exports.joinProject = async (req, res) => {
             return res.status(404).json({ error: "Project no longer exists." });
         }
 
-        // 3. Delete invite so it can't be reused (Optional: One-time use)
+        //  Delete invite (One-time use)
         await invite.deleteOne()
 
         res.status(200).json({

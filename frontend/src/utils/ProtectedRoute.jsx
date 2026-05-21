@@ -1,14 +1,14 @@
-import React from "react";
-import { Navigate } from "react-router-dom";
+import React from "react" 
+import { Navigate } from "react-router-dom" 
 
 const ProtectedRoute = ({ children }) => {
-  const token = localStorage.getItem("token"); // check if JWT exists
+  const token = localStorage.getItem("token")  // check if JWT exists
 
   if (!token) {
-    return <Navigate to="/auth" replace />;
+    return <Navigate to="/auth" replace /> 
   }
 
-  return children;
-};
+  return children 
+} 
 
-export default ProtectedRoute;
+export default ProtectedRoute 

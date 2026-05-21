@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Github, Linkedin, Bell, Camera, X, ChevronDown, Search } from 'lucide-react'
+import { Github, Linkedin, Camera, X } from 'lucide-react'
 import useAuth from '../hooks/useAuth'
 
 const EditProfile = ({ user, isEditOpen, Pfp }) => {
@@ -17,8 +17,6 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
             linkedin: user.user.social?.linkedin,
         },
     })
-    const [image, setImage] = useState(null)
-    console.log(user)
 
     const handleImageChange = (e) => {
         const file = e.target.files[0]
@@ -37,11 +35,9 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
         }
 
         reader.readAsDataURL(file)
-        console.log(formData)
     }
 
     const handleKeyDown = (e) => {
-        console.log(formData)
         if (e.key === 'Enter') {
             e.preventDefault()
             const value = tagInput.trim()
@@ -89,7 +85,6 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         const userId = user.user._id
-        console.log(userId)
         try {
             await editProfile(formData, userId)
         } catch (err) {
@@ -139,7 +134,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                         </button>
                     </div>
 
-                    {/* Right Column: Form Fields */}
+                    {/* Right Column: Form Field */}
                     <div className="col-span-9 space-y-8">
                         <h3 className="w-full bg-[#0d1117] border border-[#30363d] rounded-md px-4 py-2 text-white focus:outline-none focus:border-blue-500">
                             {user.user.email}
@@ -167,7 +162,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                             </div>
                         </div>
 
-                        {/* 2. Detailed Bio */}
+                        {/* 2. Description */}
                         <div className="space-y-4">
                             <h3 className="text-sm font-bold text-white uppercase tracking-wider">2. Description</h3>
                             <textarea name="description"
@@ -197,7 +192,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                                     </span>
                                 ))}
 
-                                {/* The Dynamic Input */}
+                                {/* Dynamic Input */}
                                 <input
                                     type="text"
                                     value={tagInput}
@@ -236,7 +231,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                     </div>
                 </div>
 
-                {/* Footer Actions */}
+                {/* Footer */}
                 <div className="px-8 py-6 border-t border-[#30363d] flex gap-4">
                     <button onClick={handleSubmit}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md text-sm font-bold transition-all shadow-lg shadow-blue-900/20">
@@ -249,7 +244,7 @@ const EditProfile = ({ user, isEditOpen, Pfp }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default EditProfile;
+export default EditProfile

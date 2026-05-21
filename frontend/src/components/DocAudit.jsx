@@ -1,13 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { ChevronDown, Terminal, History, X, ShieldCheck } from 'lucide-react';
+import { ChevronDown, History, X } from 'lucide-react'
 import { AuthContext } from '../context/AuthContext'
-import { useDocumentAudit } from '../hooks/useDocSocket';
+import { useDocumentAudit } from '../hooks/useDocSocket'
 
 const DocAudit = ({docId}) => {
   const [isOpen, setIsOpen] = useState(false)
   const user = useContext(AuthContext)
 
-  // Example auditLog variable
+  
   const { auditLog } = useDocumentAudit({
     documentId: docId,
     currentUserId: user?.user.id
@@ -17,7 +17,7 @@ const DocAudit = ({docId}) => {
 
   return (
     <>
-      {/* --- TOP BAR MINI BOX --- */}
+      {/* --- TOP BOX --- */}
       <div
         onClick={() => setIsOpen(!isOpen)}
         className="relative flex items-center gap-3 px-4 py-1.5 bg-[#0d1117] border-x border-b border-[#30363d] cursor-pointer hover:bg-[#161b22] transition-colors group"
@@ -37,7 +37,7 @@ const DocAudit = ({docId}) => {
         <ChevronDown size={12} className={`text-gray-600 group-hover:text-white transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </div>
 
-      {/* --- HISTORY DROPDOWN (MODAL/DRAWER) --- */}
+      {/* HISTORY DROPDOWN  */}
       {isOpen && (
         <div className="absolute top-10 left-1/2 -translate-x-1/2 z-[70] w-full max-w-lg bg-[#0d1117] border border-[#30363d] shadow-2xl font-mono overflow-hidden animate-in slide-in-from-top-2 duration-200">
           <div className="flex items-center justify-between px-4 py-2 bg-[#161b22] border-b border-[#30363d]">
@@ -66,7 +66,7 @@ const DocAudit = ({docId}) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default DocAudit;
+export default DocAudit

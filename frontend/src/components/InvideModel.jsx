@@ -1,20 +1,19 @@
-import React, { useState } from 'react';
-import { Copy, Check, RefreshCw, Users, Eye } from 'lucide-react';
+import React, { useState } from 'react'
+import { Copy, Check, RefreshCw, Users, Eye } from 'lucide-react'
 
 const InviteModal = () => {
-  const [copied, setCopied] = useState(null);
+  const [copied, setCopied] = useState(null)
   
-  // Example generated codes (In production, fetch these from your backend)
   const codes = {
     collaborator: "C-COLLAB-8291-XJ",
     viewer: "V-VIEW-1044-PQ"
-  };
+  }
 
   const copyToClipboard = (text, type) => {
-    navigator.clipboard.writeText(text);
-    setCopied(type);
-    setTimeout(() => setCopied(null), 2000);
-  };
+    navigator.clipboard.writeText(text)
+    setCopied(type)
+    setTimeout(() => setCopied(null), 2000)
+  }
 
   return (
     <div className="bg-[#161b22] border border-gray-800 p-6 rounded-2xl w-full max-w-md shadow-2xl">
@@ -67,7 +66,7 @@ const InviteModal = () => {
         <RefreshCw size={14} /> Regenerate Codes
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default InviteModal;
+export default InviteModal

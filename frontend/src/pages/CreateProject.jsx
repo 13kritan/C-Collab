@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { ChevronLeft, Terminal, Sparkles } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { useProject } from '../hooks/useProject';
+import React, { useState } from 'react' 
+import { ChevronLeft, Terminal, Sparkles } from 'lucide-react' 
+import { useNavigate } from 'react-router-dom' 
+import { useProject } from '../hooks/useProject' 
 
 const CreateProject = () => {
     const { createProject } = useProject()
@@ -41,14 +41,14 @@ const CreateProject = () => {
                 Return to Root
             </button>
 
-            {/* Header with Segmented Line */}
+            {/* Header  */}
             <div className="mb-16 relative">
                 <div className="flex items-center gap-3 mb-2">
                     <Sparkles size={18} className="text-accent-blue" />
                     <h1 className="text-3xl font-bold text-slate-100 tracking-tight">New Workspace</h1>
                 </div>
                 <p className="text-slate-500 text-sm">Initialize a new isolated development environment.</p>
-                {/* The signature blue segment from your UI */}
+                
                 <div className="absolute -bottom-6 left-0 w-full h-[1px] bg-white/[0.05]">
                     <div className="absolute left-0 w-24 h-full bg-accent-blue shadow-[0_0_10px_#3b82f6]" />
                 </div>
@@ -94,13 +94,12 @@ const CreateProject = () => {
                         <Terminal size={16} className="group-hover:rotate-12 transition-transform" />
                         <span>Initialize</span>
 
-                        {/* Corner accent for the button */}
                         <div className="absolute -top-1 -right-1 h-2 w-2 border-t border-r border-blue-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </button>
                 </div>
             </div>
         </div>
-    );
-};
+    ) 
+} 
 
 export default CreateProject

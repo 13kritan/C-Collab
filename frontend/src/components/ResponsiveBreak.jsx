@@ -48,7 +48,7 @@ const ResponsiveBreak = ({ viewportWidth }) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default ResponsiveBreak

@@ -11,15 +11,14 @@ const MembersTab = ({ projectDetails }) => {
     const [inviteTabOpen, setInviteTabOpen] = useState(false)
     const projectId = projectDetails._id
     const { code, generateInvite, formatTime, loading, isExpired, error } = useInvite(projectId)
-    console.log(projectDetails)
 
-    const [copied, setCopied] = useState(false);
+    const [copied, setCopied] = useState(false)
 
     const handleCopy = () => {
-        if (!code || isExpired) return;
-        navigator.clipboard.writeText(code);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        if (!code || isExpired) return
+        navigator.clipboard.writeText(code)
+        setCopied(true)
+        setTimeout(() => setCopied(false), 2000)
     }
 
     
@@ -167,10 +166,10 @@ const MembersTab = ({ projectDetails }) => {
                 </div>
             </div>
         </>
-    );
-};
+    )
+}
 
-// Sub-component for section titles to keep code clean
+// Sub-component for section titles
 const SectionHeader = ({ title, icon, count, color }) => (
     <div className={`flex items-center justify-between border-b border-gray-800 pb-2 mb-4 ${color}`}>
         <div className="flex items-center gap-2 uppercase text-xs tracking-[0.2em] font-bold">
@@ -256,4 +255,4 @@ const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, delete
     </div>
 );
 
-export default MembersTab;
+export default MembersTab

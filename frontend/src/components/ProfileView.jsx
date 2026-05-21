@@ -11,10 +11,10 @@ const ProfileView = () => {
         <>
 
             <div className="min-h-screen bg-[#010409] text-[#c9d1d9] p-8 font-mono">
-                {/* Container with subtle glow/glass effect */}
+                
                 <div className="max-w-5xl mx-auto bg-[#0d1117] border border-[#30363d] rounded-xl shadow-2xl overflow-hidden">
 
-                    {/* Top Navigation Bar */}
+                    {/* Top Bar */}
                     <div className=" px-6 py-4  border-b border-[#30363d] bg-[#161b22]/50">
                         <button onClick={() => navigate(-1)}
                             className="flex items-center gap-2 mb-2 text-slate-400 hover:text-accent-blue transition-all group font-mono text-[10px] uppercase tracking-[0.4em]">
@@ -53,7 +53,7 @@ const ProfileView = () => {
                                 </div>
                             </div>
 
-                            {/* Quick Info Bar */}
+                            {/* Info Bar */}
                             <div className="grid grid-cols-3 gap-4 p-4 bg-[#161b22] border border-[#30363d] rounded-xl text-[11px]">
                                 <div className="flex items-center gap-2">
                                     <Mail size={14} className="text-gray-500" />
@@ -77,10 +77,10 @@ const ProfileView = () => {
                                 </div>
                             </div>
 
-                            {/* Grid Layout for Details */}
+                            {/* Grid Layout */}
                             <div className="grid grid-cols-12 gap-6">
 
-                                {/* Left Column: Expertise & Social */}
+                                {/* Expertise & Social */}
                                 <div className="col-span-8 space-y-6">
                                     {/* Expertise Section */}
                                     <div className="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
@@ -108,7 +108,7 @@ const ProfileView = () => {
                                     </div>
                                 </div>
 
-                                {/* Right Column: Graph & Links */}
+                                {/* About */}
                                 <div className="col-span-4 space-y-6">
                                     <div className="space-y-3 text-[12px]">
                                         <div className="flex justify-between">
@@ -132,7 +132,7 @@ const ProfileView = () => {
                 </div>
             </div>
         </>
-    );
+    )
 }
 
-export default ProfileView;
+export default ProfileView

@@ -77,4 +77,4 @@ const ProfileDropdown = ({ menuItems, dropdownRef, isOpen, setIsOpen, checkLoc }
     )
 }
 
-export default ProfileDropdown;
+export default ProfileDropdown
