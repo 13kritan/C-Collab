@@ -86,14 +86,22 @@ export const useDocument = () => {
     setLoading(true)
     setError(null)
     try {
-      await axios.delete(
+      const res = await axios.delete(
         `${API}/document/${docId}`,
         authConfig()
       )
-      setDocuments((prev) =>
-        prev.filter((doc) => doc._id !== docId)
-      )
-      toast.success(`[FS] RM: UNLINKING_SOURCE_FILE...`)
+      if (res.status === 403) toast.error("> ERR: INVALID_AUTH_ACTION")
+      else {
+
+
+
+        setDocuments((prev) =>
+          prev.filter((doc) => doc._id !== docId)
+        )
+
+        toast.success(`[FS] RM: UNLINKING_SOURCE_FILE...`)
+      }
+      console.log(res)
     } catch (err) {
       setError(err.response?.data?.message || "Failed to delete document")
       toast.error("> ERR: INVALID_AUTH_ACTION")

@@ -49,7 +49,7 @@ module.exports = (io) => {
 
       dockerProcess.stdout.on("data", (data) => {
         const text = data.toString();
-        socket.emit("stdout", text);
+        socket.emit("stdout", text + "\n");
         // Simple heuristic: if output ends in ':' or '?', it's likely a prompt
         if (text.trim().endsWith(":") || text.trim().endsWith("?")) {
           socket.emit("awaiting-input", true);

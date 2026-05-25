@@ -135,9 +135,9 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                             >
                                 <div onClick={() => handleDocClick(file._id)}
                                     className="flex h-full py-3 items-center gap-4 flex-1 mr-4 text-slate-300 hover:text-accent-blue">
-                                    <FileText size={18} className="text-blue-400/60" />
+                                    <FileText size={18} className={`text-blue-400/60`} />
                                     {renamingId === file._id ? (
-                                        <input
+                                        <input 
                                             value={renameValue}
                                             autoFocus
                                             onChange={(e) => setRenameValue(e.target.value)}
@@ -156,14 +156,14 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
                                                     setRenamingId(null)
                                                 }
                                             }}
-                                            className="bg-transparent border border-white/10 px-2 py-1 text-sm"
+                                            className="bg-transparent w-28 pl-2 py-1 text-sm"
                                         />
                                     ) : (
                                         <span className="text-sm font-mono">{file.name}</span>
                                     )}
                                 </div>
 
-                                <div className="relative  flex items-center gap-8 font-mono text-[10px] text-slate-600">
+                                <div className={`relative  flex items-center gap-8 font-mono text-[10px] text-slate-600 ${renamingId === file._id? "hidden" : ""}`}>
                                     <button
                                         onClick={(e) => {
                                             e.stopPropagation()
