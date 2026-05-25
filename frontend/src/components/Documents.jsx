@@ -18,7 +18,7 @@ export default function Documents({ projectDetails, docClick, handleDocClick }) 
     useEffect(() => {
         if (!projectDetails?._id) return
         fetchDocumentsByProject(projectDetails._id)
-    }, [projectDetails?._id, fetchDocumentsByProject, documents])
+    }, [projectDetails?._id, fetchDocumentsByProject])
 
 
     // On Change Function
