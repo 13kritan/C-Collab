@@ -158,6 +158,27 @@ export const useProject = () => {
         }
     }
 
+    // Change Roles of Members
+  const changeRole = async (role, userId, projectId) => {
+    setLoading(true)
+    setError(null)
+    console.log(role, userId, projectId)
+
+    try {
+      const response = await axios.post(`${API}/project/changeRole/${projectId}`, { 
+        userId,
+        role
+      }, authConfig())
+      
+      if(response) toast.success("[CONF] MOD_CONFIG: ROLE_UPDATE_SUCCESS")
+      
+    } catch (err) {
+      setError(err.response?.data?.error || "Failed to change role.")
+    } finally {
+      setLoading(false)
+    }
+  }
+
     // Fetch Project By Id
     const fetchAuditLogs = async (id) => {
         setLoading(true)
@@ -191,6 +212,7 @@ export const useProject = () => {
         deleteProject,
         fetchAuditLogs,
         deleteCollaborator,
-        deleteViewer
+        deleteViewer,
+        changeRole
     }
 }

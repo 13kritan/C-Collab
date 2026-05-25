@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 
 const MembersTab = ({ projectDetails }) => {
     const navigate = useNavigate()
-    const { deleteViewer, deleteCollaborator } = useProject()
+    const { deleteViewer, deleteCollaborator, changeRole } = useProject()
     const [inviteTabOpen, setInviteTabOpen] = useState(false)
     const projectId = projectDetails._id
     const { code, generateInvite, formatTime, loading, isExpired, error } = useInvite(projectId)
@@ -54,7 +54,7 @@ const MembersTab = ({ projectDetails }) => {
                             <div className="mb-10">
                                 <SectionHeader title="Collaborators" icon={<Code2 size={16} />} count={projectDetails?.collaborators.length} color="text-emerald-400" />
                                 {projectDetails?.collaborators.length > 0 ? (
-                                    projectDetails?.collaborators.map(c => <MemberRow navigate={navigate} key={c._id} deleteCollaborator={deleteCollaborator} projectDetails={projectDetails} member={c} />)
+                                    projectDetails?.collaborators.map(c => <MemberRow navigate={navigate} key={c._id} deleteCollaborator={deleteCollaborator} projectDetails={projectDetails} changeRole={changeRole} member={c} role={'collaborator'} />)
                                 ) : (
                                     <p className="text-xs text-gray-600 pl-4">No active collaborators.</p>
                                 )}
@@ -64,7 +64,7 @@ const MembersTab = ({ projectDetails }) => {
                             <div className="mb-10">
                                 <SectionHeader title="Viewers" icon={<Eye size={16} />} count={projectDetails?.viewers.length} color="text-purple-400" />
                                 {projectDetails?.viewers.length > 0 ? (
-                                    projectDetails?.viewers.map(v => <MemberRow navigate={navigate} key={v.id} deleteViewer={deleteViewer} projectDetails={projectDetails} member={v} />)
+                                    projectDetails?.viewers.map(v => <MemberRow changeRole={changeRole} navigate={navigate} key={v.id} deleteViewer={deleteViewer} projectDetails={projectDetails} member={v} role={'viewer'} />)
                                 ) : (
                                     <p className="text-xs text-gray-600 pl-4">No read-only viewers.</p>
                                 )}
@@ -192,7 +192,8 @@ function getInitials(name = "") {
 }
 
 
-const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, deleteViewer, navigate }) => (
+const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, deleteViewer, navigate, changeRole, role }) => (
+    
     <div
         className="group flex items-center justify-between py-3 px-3 hover:bg-[#161b22] rounded-md transition-all border border-transparent hover:border-gray-800 mb-1">
         <div onClick={() => navigate(`/view-profile/${member._id}`, {
@@ -219,15 +220,18 @@ const MemberRow = ({ member, isOwner, projectDetails, deleteCollaborator, delete
             </div>
         </div>
 
+{/* CHANGE ROLES */}
         <div className="flex items-center gap-4">
-            {!isOwner && (
-                <select
+        
+            {!isOwner && ( 
+                <select  onChange={(e) => changeRole(e.target.value, member._id, projectDetails._id)}
                     className="bg-[#0d1117] border border-gray-800 rounded px-2 py-1 text-[11px] text-gray-400 focus:ring-1 focus:ring-blue-500 outline-none cursor-pointer hover:text-white"
-                    defaultValue={member.role}
+                    defaultValue={role}
                 >
-                    <option value="Collaborator">Collaborator</option>
-                    <option value="Viewer">Viewer</option>
+                    <option value="collaborator">Collaborator</option>
+                    <option value="viewer">Viewer</option>
                 </select>
+                
             )}
             <button onClick={() => {
                 const projectId = projectDetails._id

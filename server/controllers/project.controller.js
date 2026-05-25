@@ -258,10 +258,71 @@ exports.addViewer = async (req, res) => {
     }
 }
 
+//   ADD VIEWER (owner + collaborator)
+exports.changeRole = async (req, res) => {
+    try {
+        const projectId = req.params.projectId
+        const { role, userId } = req.body
+
+        console.log(userId, role, projectId)
+        const project = await Project.findById(projectId)
+
+        if (!project)
+            return res.status(404).json({ message: "Project not found" })
+
+        const canChange = project.owner.toString() === req.userId
+
+        if (!canChange)
+            return res.status(403).json({ message: "Allowed By Owner " })
+
+            if (role === "collaborator") {
+
+                // remove from viewers
+                project.viewers = project.viewers.filter(
+                    id => id.toString() !== userId
+                )
+            
+                // add to collaborators if not already exists
+                if (!project.collaborators.includes(userId)) {
+                    project.collaborators.push(userId)
+                }
+            
+            } else if (role === "viewer") {
+            
+                // remove from collaborators
+                project.collaborators = project.collaborators.filter(
+                    id => id.toString() !== userId
+                )
+            
+                // add to viewers if not already exists
+                if (!project.viewers.includes(userId)) {
+                    project.viewers.push(userId)
+                }
+            }
+
+        await project.save()
+
+
+        //  AUDIT LOG
+        await AuditLog.create({
+            project: project._id,
+            action: "Role Changed",
+            performedBy: req.userId,
+            targetUser: userId,
+            details: "User Role changed in Project."
+        })
+        res.json(project)
+
+    } catch (err) {
+        console.error("Change Role Error.", err)
+        res.status(500).json({ message: "Server error" })
+    }
+}
+
 // REMOVE VIEWER (owner + collaborator)
 exports.deleteViewer = async (req, res) => {
     try {
-        const { userId } =  req.body
+        const { userId } = req.body
         console.log(userId)
         const project = await Project.findById(req.params.id)
 

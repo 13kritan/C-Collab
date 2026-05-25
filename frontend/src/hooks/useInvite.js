@@ -76,7 +76,7 @@ export const useInvite = (projectId) => {
     }
   }
 
-  // --- UTILITY: FORMAT TIME (MM:SS) ---
+  //  FORMAT TIME (MM:SS) 
   const formatTime = () => {
     const mins = Math.floor(inviteData.timeLeft / 60)
     const secs = inviteData.timeLeft % 60

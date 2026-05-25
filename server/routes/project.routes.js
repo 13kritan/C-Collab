@@ -1,5 +1,5 @@
 const express = require("express")
-const { createProject, getProjectById, updateProject, deleteProject, getMyProjects, addViewer, addCollaborator, removeViewer, deleteViewer, deleteCollaborator, getAuditLogs } = require("../controllers/project.controller")
+const { createProject, getProjectById, updateProject, deleteProject, getMyProjects, addViewer, addCollaborator, removeViewer, deleteViewer, deleteCollaborator, getAuditLogs, changeRole } = require("../controllers/project.controller")
 const auth = require("../middlewares/auth.middleware")
 
 const router = express.Router()
@@ -16,6 +16,7 @@ router.delete("/:id", deleteProject)
 // PROJECT MEMBERS
 router.post("/:id/collaborators", addCollaborator)
 router.delete("/deletecollab/:id", deleteCollaborator)
+router.post("/changeRole/:projectId", changeRole)
 
 router.post("/:id/viewers", addViewer)
 router.delete("/deleteviewer/:id", deleteViewer)
